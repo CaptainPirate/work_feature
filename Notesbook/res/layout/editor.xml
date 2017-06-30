@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*
+ *  when  |      who     |    keyword           |        why         |         what                  *
+ *===================================================================================================*
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*
+ *===================================================================================================*
+ *20160531|mengzhiming.wt|   customer req       | customer req    | customer req                      *
+ *===================================================================================================*
+ *20160602|mengzhiming.wt|   bug183541          |  bug183541      | bug183541                    *
+ *===================================================================================================*
+ *20160606|mengzhiming.wt|   bug183341          |  bug183341      | bug183341                    *
+ *===================================================================================================*
+ *20160612|mengzhiming.wt|   bug183530         |  bug183530      | bug183530                    *
+ *===================================================================================================*
+ *20160616|mengzhiming.wt|   bug188107         |  bug188107      | bug188107                    *
+ *===================================================================================================*
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <LinearLayout android:id="@+id/alert_fill"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/alert_state"
+                android:layout_width="fill_parent"
+                android:layout_height="61dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="34dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/alert_shape"
+                    >
+
+                    <ImageView
+                        android:id="@+id/alert_icon"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
+                        android:src="@drawable/ic_list_alert" />
+                    <TextView
+                        android:id="@+id/alert_time"
+                        android:layout_toRightOf="@id/alert_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:textColor="#6f6f6f"
+                        android:paddingLeft="13dp"
+                        android:textSize="14sp" />
+                    <ImageButton
+                        android:id="@+id/alert_del"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:src="@drawable/ic_delete_selector"
+                        android:background="#f4f4f4"
+                        android:gravity="center_vertical"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:background="#d4d4d4"
+                    android:layout_marginLeft="21dp"
+                    android:visibility="gone"/>
+                <View
+                    android:id="@+id/alert_line_down"
+                    android:layout_width="fill_parent"
+                    android:layout_height="10dp" />
+            </LinearLayout>
+            <View
+                android:id="@+id/no_alert_marge_up"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"/>
+
+        </LinearLayout>
+
+        <RelativeLayout android:id="@+id/editor"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:id="@+id/group_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/attachment_all"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#fafafa"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+                    <ImageButton
+                        android:id="@+id/attachment_onoff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_alignParentRight="true"
+                        android:background="#fafafa"
+                        android:src="@drawable/ic_attachment_on" />
+
+                    <LinearLayout
+                        android:id="@+id/attachment_panel"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/attachment_onoff"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:paddingRight="10dp">
+
+                        <ImageButton
+                            android:id="@+id/attachment_camera1"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:background="#fafafa"
+                            android:src="@drawable/ic_attach_photo"
+                            android:visibility="gone" />
+                        <ImageButton
+                            android:id="@+id/attachment_galerry1"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:background="#fafafa"
+                            android:src="@drawable/ic_attach_picture"
+                            android:visibility="gone" />
+                        <ImageButton
+                            android:id="@+id/attachment_alart"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:background="#fafafa"
+                            android:src="@drawable/ic_header_alert"
+                            android:visibility="gone" />
+                        <ImageButton
+                            android:id="@+id/attachment_color"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:background="#fafafa"
+                            android:src="@drawable/ic_header_color"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#d8d8d8" />
+
+                <LinearLayout
+                    android:id="@+id/mbottom_panel"
+                    style="?android:attr/buttonBarStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:background="#ffffff"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/cancel_edit"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="34dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/edit_cancel"
+                        android:textColor="#3C3C3C" />
+                    <Button
+                        android:id="@+id/save_edit"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="34dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/edit_save"
+                        android:textColor="#b1b1b1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <view android:id="@+id/rich_editor"
+                class="com.wingtech.note.editor.RichEditor"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/group_panel"
+                android:layout_alignParentTop="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:background="@null"
+                android:fadingEdgeLength="0.0dip"
+                android:overScrollMode="never"
+                android:scrollbars="none" />
+            <view android:id="@+id/sketch_view"
+                class="com.wingtech.note.sketch.SketchView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <FrameLayout android:id="@+id/edit_cover"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/edit_bottom"
+        android:visibility="gone" />
+</FrameLayout>

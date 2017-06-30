@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*	
+ *  when  |      who     |    keyword           |        why         |         what                  *	
+ *===================================================================================================*	
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*	
+ *===================================================================================================*
+-->
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/grid_item_width"
+    android:layout_height="@dimen/grid_item_height"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="@dimen/grid_item_margin_bottom"
+    android:layout_marginRight="@dimen/grid_item_margin_right"
+    class="com.wingtech.note.list.GridNoteItem" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="@dimen/grid_note_image_margin_top" >
+
+        <FrameLayout
+            android:id="@+id/note_image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" >
+
+            <ImageView
+                android:id="@+id/note_image"
+                android:layout_width="wrap_content"
+                android:layout_height="80.0dip"
+                android:layout_marginBottom="@dimen/grid_note_image_margin_bottom"
+                android:layout_marginLeft="@dimen/grid_note_image_margin_left"
+                android:layout_marginRight="@dimen/grid_note_image_margin_right"
+                android:scaleType="fitStart" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/note_indicators"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/grid_indicator_layout_height"
+            android:layout_alignParentBottom="true"
+            android:gravity="right|center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/grid_indicator_padding_bottom"
+            android:paddingRight="@dimen/grid_indicator_padding_right" >
+
+            <include layout="@layout/grid_item_indicators" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/note_content"
+            style="@style/Widget.GridText"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_above="@id/note_indicators"
+            android:layout_below="@id/note_image_layout"
+            android:layout_marginBottom="-8.0dip"
+            android:layout_marginLeft="@dimen/grid_note_content_margin_left"
+            android:layout_marginRight="@dimen/grid_note_content_margin_right"
+            android:layout_marginTop="@dimen/grid_note_content_margin_top"
+            android:maxLines="@integer/grid_note_text_max_lines"
+            android:textAppearance="@style/TextAppearance.Grid" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/stick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="4dip"
+        android:layout_marginTop="0dip"
+        android:background="@drawable/ic_grid_stick"
+        android:visibility="visible" />
+
+</view>

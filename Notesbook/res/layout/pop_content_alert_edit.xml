@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*
+ *  when  |      who     |    keyword           |        why         |         what                  *
+ *===================================================================================================*
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*
+ *===================================================================================================*
+ *20160602|mengzhiming.wt|bug183453 | bug183453  | bug183453 *
+ *===================================================================================================*
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="166dp"
+    android:layout_height="45dp"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="0dip"
+    android:paddingStart="0dip"
+    android:paddingEnd="3dip"
+    android:paddingTop="0dip" >
+
+    <TextView
+        android:id="@+id/update_alert"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:textColor="#3c3c3c"
+        android:textSize="14sp"
+        android:drawableStart="@drawable/ic_alarm_edit"
+        android:gravity="center_vertical"
+        android:text="@string/alert_edit_action_update"
+        />
+
+    <View
+        android:layout_width="1.0px"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="0dp"
+        android:background="#3c3c3c"/>
+
+    <TextView
+        android:id="@+id/delete_alert"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:textColor="#3c3c3c"
+        android:drawableStart="@drawable/ic_alarm_remove"
+        android:gravity="center_vertical"
+        android:text="@string/alert_edit_action_delete"
+        android:textSize="14sp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

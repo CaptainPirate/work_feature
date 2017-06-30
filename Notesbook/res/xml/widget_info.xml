@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*	
+ *  when  |      who     |    keyword           |        why         |         what                  *	
+ *===================================================================================================*	
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*	
+ *===================================================================================================*
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/widget"
+    android:minHeight="200.0dip"
+    android:minResizeHeight="200.0dip"
+    android:minResizeWidth="200.0dip"
+    android:minWidth="200.0dip"
+    android:resizeMode="horizontal|vertical" />

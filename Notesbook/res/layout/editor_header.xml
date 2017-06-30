@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*
+ *  when  |      who     |    keyword           |        why         |         what                  *
+ *===================================================================================================*
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*
+ *===================================================================================================*
+ *20160531|mengzhiming.wt|   customer req       | customer req    | customer req                     *
+ *===================================================================================================*
+ *20160606|mengzhiming.wt|   BUG183350          | BUG183350       | BUG183350                        *
+ *===================================================================================================*
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="5.0dip"
+    android:paddingRight="5.0dip"
+    android:background="@color/title_Bg"
+    android:paddingTop="10dip" >
+
+    <ImageView
+        android:id="@+id/up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="5.0dip"
+        android:paddingRight="10.0dip"
+        android:src="@drawable/ic_header_back"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/time_container"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/notes_edit_header_padding_size">
+
+        <TextView android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <TextView android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/date"
+            android:ellipsize="end"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_header_alert"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:textAppearance="@style/TextAppearance.Title.Small"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/attachment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_header_attachment"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_header_color"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*
+ *  when  |      who     |    keyword           |        why         |         what                  *
+ *===================================================================================================*
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*
+ *20160520|mengzhiming.wt|       bug 176422            | bug 176422         |  bug 176422                                     *
+ *===================================================================================================*
+ *20160531|mengzhiming.wt|   customer req       | customer req    | customer req                      *
+ *===================================================================================================*
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_new_note"
+        android:showAsAction="never"
+        android:title="@string/menu_new_note"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_delete"
+        android:showAsAction="never"
+        android:title="@string/menu_delete"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_discard"
+        android:showAsAction="never"
+        android:title="@string/menu_discard"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_font_size"
+        android:showAsAction="never"
+        android:title="@string/menu_font_size"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_send"
+        android:showAsAction="never"
+        android:title="@string/menu_send"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_send_to_desktop"
+        android:showAsAction="never"
+        android:title="@string/menu_send_to_desktop"
+        android:visible="false"/>
+
+
+</menu>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*	
+ *  when  |      who     |    keyword           |        why         |         what                  *	
+ *===================================================================================================*	
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*	
+ *===================================================================================================*
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_action_call"
+        android:title="@string/editor_link_call"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_action_email"
+        android:title="@string/editor_link_email"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_action_web"
+        android:title="@string/editor_link_web"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_action_other"
+        android:title="@string/editor_link_other"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_action_select"
+        android:title="@string/editor_link_select"/>
+
+</menu>

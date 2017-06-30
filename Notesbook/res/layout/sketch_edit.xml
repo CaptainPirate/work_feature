@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*	
+ *  when  |      who     |    keyword           |        why         |         what                  *	
+ *===================================================================================================*	
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*	
+ *===================================================================================================*
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionmode_header"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingLeft="0dip"
+    android:paddingRight="15dip" >
+
+    <ImageView
+        android:id="@+id/sketch_color"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_sketch_color" />
+
+    <ImageView
+        android:id="@+id/sketch_width"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_sketch_width" />
+
+    <ImageView
+        android:id="@+id/sketch_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_sketch_delete" />
+
+    <ImageView
+        android:id="@+id/sketch_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_sketch_cancel" />
+
+    <ImageView
+        android:id="@+id/sketch_recover"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_sketch_recover" />
+
+    <ImageView
+        android:id="@+id/sketch_send"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/notes_edit_header_padding_size"
+        android:paddingRight="@dimen/notes_edit_header_padding_size"
+        android:src="@drawable/ic_sketch_send" />
+
+</LinearLayout>

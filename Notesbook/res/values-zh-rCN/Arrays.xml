@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *===================================================================================================*	
+ *  when  |      who     |    keyword           |        why         |         what                  *	
+ *===================================================================================================*	
+ *20160407|mengzhiming.wt|porting A1s enjoynotes| Port_EnjoyNotes | porting A1s enjoynotes to CMCC N2*	
+ *===================================================================================================*
+-->
+<resources>
+    <string-array name="contact_entries">
+        <item>姓名</item>
+        <item>昵称</item>
+        <item>手机号码</item>
+        <item>电子邮箱</item>
+        <item>Organization</item>
+        <item>IM</item>
+        <item>SIP Phone</item>
+        <item>Birthday</item>
+        <item>Website</item>
+        <item>Address</item>
+        <item>Note</item>
+    </string-array>
+    <string-array name="font_size_names">
+        <item>小</item>
+        <item>默认</item>
+        <item>大</item>
+        <item>极大</item>
+    </string-array>
+    <string-array name="background_entries">
+        <item>浅黄</item>
+        <item>深黄</item>
+        <item>蓝</item>
+        <item>绿</item>
+        <item>粉红</item>
+        <item>随机</item>
+    </string-array>
+
+</resources>
