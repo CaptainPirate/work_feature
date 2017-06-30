@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright @ 2015 China Mobile Group Device Co.,Ltd.
+     All rights Reserved.
+ -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/today_icon_background"
+        android:drawable="@drawable/calendar_bg"/>
+    <item
+        android:id="@+id/today"
+        android:drawable="@drawable/calendar_1"/>
+</layer-list>

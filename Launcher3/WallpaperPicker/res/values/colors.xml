@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/colors.xml
+**
+** Copyright 2013, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License"); 
+** you may not use this file except in compliance with the License. 
+** You may obtain a copy of the License at 
+**
+**     http://www.apache.org/licenses/LICENSE-2.0 
+**
+** Unless required by applicable law or agreed to in writing, software 
+** distributed under the License is distributed on an "AS IS" BASIS, 
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+** See the License for the specific language governing permissions and 
+** limitations under the License.
+*/
+-->
+<!--
+===================================================================================
+|   when    |    who       |    keyword      |      why        |    what         |
+===================================================================================
+20160407     liyichong.wt   bug 155069        requirements      modify layout
+20160412     liyichong.wt   bug 155069        requirements      modify layout
+===================================================================================
+-->
+<resources>
+    <color name="wallpaper_picker_translucent_gray">#66000000</color>
+    
+    <!-- bug 155069, liyichong.wt, ADD, 20160407 start -->
+    <color name="crop_title_color">#dbdbdb</color>
+    <!-- bug 155069, liyichong.wt, ADD, 20160412 start -->
+    <color name="crop_title_color_press">#00bffe</color>
+    <color name="geometry_shadow_color">#BB000000</color>
+    <!-- bug 155069, liyichong.wt, ADD, 20160412 end -->
+    <color name="crop_shadow_color">#CF000000</color>
+    <color name="crop_shadow_wp_color">#4F000000</color>
+    <color name="crop_wp_markers">#7FFFFFFF</color>
+    <!-- bug 155069, liyichong.wt, ADD, 20160407 end -->
+</resources>

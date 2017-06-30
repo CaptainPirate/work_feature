@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.iflytek.news.ui.browser.BrowserWebView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="true"
+    android:fadingEdge="none"
+    android:fadingEdgeLength="0dp"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbarThumbVertical="@drawable/news_listview_scrollbar"
+    android:scrollbarTrackVertical="@null"
+    android:scrollbars="vertical" />

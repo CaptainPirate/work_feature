@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/news_positive_btn_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/news_positive_btn"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/news_thin_dialog_btn_bg"
+                android:textColor="@color/news_thin_dialog_footer_btn_bg"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#2e000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/news_neutral_btn_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/news_neutral_btn"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/news_thin_dialog_btn_bg"
+                android:textColor="@color/news_thin_dialog_footer_btn_bg"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#2e000000" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/news_negative_btn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/news_thin_dialog_btn_bg"
+            android:text="@string/news_cancel"
+            android:textColor="@color/news_thin_dialog_footer_btn_bg"
+            android:textSize="16dp" />
+    </LinearLayout>
+</LinearLayout>

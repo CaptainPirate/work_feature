@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/news_item_root"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:id="@+id/news_layout_template_content_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/news_common_margin_left_right"
+        android:paddingRight="7dp"
+        android:paddingTop="23dp"
+        android:paddingBottom="16dp"
+        android:background="@drawable/news_list_item_bg">
+
+        <include layout="@layout/news_template_title_and_tts_view"/>
+
+        <include layout="@layout/news_template_news_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginLeft="@dimen/news_common_margin_left_right"
+        android:layout_marginRight="@dimen/news_common_margin_left_right"
+        android:background="@color/news_item_divider_color"/>
+
+    <!--
+    <include layout="@layout/news_template_comment"/>
+    -->
+</LinearLayout>

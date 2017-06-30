@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/news_close_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16.7dp"
+            android:layout_marginTop="8.4dp"
+            android:src="@drawable/news_tts_panel_close_btn_bg" />
+
+        <LinearLayout
+            android:id="@+id/news_title_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/news_current_broadcast"
+                android:textColor="#333333"
+                android:textSize="14dp" />
+
+            <View
+                android:layout_width="25dp"
+                android:layout_height="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="16.7dp"
+                android:background="#333333" />
+
+            <TextView
+                android:id="@+id/news_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:textColor="#333333"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/news_speed_control_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/news_speed_control"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@drawable/news_speed_btn_bg"
+                android:duplicateParentState="true"
+                android:gravity="center"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="#9a9a9a" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/news_control_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/news_speed_control_wrapper"
+            android:layout_marginBottom="26.7dp">
+
+            <ImageView
+                android:id="@+id/news_play_or_pause_btn"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/news_play_or_pause_btn_bg" />
+
+            <ImageView
+                android:id="@+id/news_next"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="23.3dp"
+                android:layout_toRightOf="@id/news_play_or_pause_btn"
+                android:padding="10dp"
+                android:src="@drawable/news_next_news_btn_bg" />
+
+            <ImageView
+                android:id="@+id/news_prev"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="23.3dp"
+                android:layout_toLeftOf="@id/news_play_or_pause_btn"
+                android:padding="10dp"
+                android:src="@drawable/news_prev_news_btn_bg" />
+        </RelativeLayout>
+    </RelativeLayout>
+</merge>

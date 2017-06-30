@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPRD: bug375748 2014-12-01 Feature customize app icon sort. -->
+<apps xmlns:appsort="http://schemas.android.com/apk/res-auto/addon.sprd.launcher3.appsort" >
+    <!-- 时钟 -->
+    <app
+        appsort:pkgName="com.android.deskclock" />
+    <!-- 日历 -->
+    <app
+        appsort:pkgName="com.android.calendar" />
+    <!-- 计算器 -->
+    <app
+        appsort:pkgName="com.android.calculator2" />
+    <!-- 录音机 -->
+    <app
+        appsort:pkgName="com.android.soundrecorder" />
+    <!-- 音乐 -->
+    <app
+        appsort:pkgName="cmccwm.mobilemusic.M823Icon" />
+    <!-- 视频 -->
+    <app
+        appsort:pkgName="com.android.mplayer" />
+    <!-- 图库 -->
+    <app
+        appsort:pkgName="com.android.gallery3d" />
+    <!-- 照相机 -->
+    <app
+        appsort:pkgName="com.android.camera2" />
+    <!-- 消息 -->
+    <app
+        appsort:pkgName="com.android.mms" />
+    <!-- 拨号 -->
+    <app
+        appsort:pkgName="com.android.contacts"
+        appsort:clsName="com.android.dialer.DialtactsActivity" />
+    <!-- 联系人 -->
+    <app
+        appsort:pkgName="com.android.contacts"
+        appsort:clsName="com.android.contacts.activities.PeopleActivity" />
+    <!-- 收音机 -->
+    <app
+        appsort:pkgName="com.caf.fmradio" />
+    <!-- 电子邮件 -->
+    <app
+        appsort:pkgName="com.android.email" />
+    <!-- 浏览器 -->
+    <app
+        appsort:pkgName="com.android.browser" />
+    <!-- 文件管理器 -->
+    <app
+        appsort:pkgName="com.jrdcom.filemanager" />
+    <!-- 设置 -->
+    <app
+        appsort:pkgName="com.android.settings"
+        appsort:clsName="com.android.settings.SettingsTab" />
+    <!-- 手机管家 -->
+    <app
+        appsort:pkgName="com.cmdc.phonekeeper"
+        appsort:clsName="com.cmdc.phonekeeper.PhoneKeeperMainActivity" />
+    <!-- 备份与恢复 -->
+    <app
+        appsort:pkgName="com.android.backup" />
+    <!-- 记事本 -->
+    <app
+        appsort:pkgName="com.tct.note" />
+    <!-- 讯飞输入法 -->
+    <app
+        appsort:pkgName="com.iflytek.inputmethod" />
+    <!-- 指南针 -->
+    <app
+        appsort:pkgName="com.jrdcom.compass" />
+    <!-- 多屏分享 -->
+    <app
+        appsort:pkgName="com.android.settings"
+        appsort:clsName="com.android.settings.Settings$WifiDisplaySettingsActivity" />
+    <!-- 下载 -->
+    <app
+        appsort:pkgName="com.android.providers.downloads.ui" />
+    <!-- 搜索 -->
+    <app
+        appsort:pkgName="com.android.quicksearchbox" />
+    <!-- 用户服务 -->
+    <app
+        appsort:pkgName="com.xxx.userservice" />
+    <!-- 用户手册 -->
+    <app
+        appsort:pkgName="com.tsnj.usermanual" />
+    <!-- 用户反馈 -->
+    <!--
+    <app
+        appsort:pkgName="com.android.userfeedback" />-->
+    <!-- 灵犀 -->
+    <app
+        appsort:pkgName="com.iflytek.cmcc" />
+    <!-- MM -->
+    <app
+        appsort:pkgName="com.aspire.mm" />
+    <!-- 随e行 -->
+    <app
+        appsort:pkgName="com.chinamobile.cmccwifi" />
+    <!-- 飞信 -->
+    <app
+        appsort:pkgName="cn.com.fetion" />
+    <!-- 139邮箱 -->
+    <app
+        appsort:pkgName="cn.cj.pe" />
+    <!-- 和游戏 -->
+    <app
+        appsort:pkgName="cn.emagsoftware.gamehall" />
+    <!-- 咪咕音乐 -->
+    <app
+        appsort:pkgName="cmccwm.mobilemusic.M823" />
+    <!-- 和阅读 -->
+    <app
+        appsort:pkgName="com.andreader.prein" />
+    <!-- 和视界 -->
+    <app
+        appsort:pkgName="com.cmvideo.migumovie" />
+     <!-- 和生活 -->
+    <app
+        appsort:pkgName="com.whty.wicity.china" />
+    <!-- 和地图 -->
+    <app
+        appsort:pkgName="com.autonavi.cmccmap" />
+    <!-- 和包 -->
+    <app
+        appsort:pkgName="com.cmcc.wallet" />
+    <!-- WPS -->
+    <app
+        appsort:pkgName="cn.wps.moffice_eng" />
+    <!-- 手机百度 -->
+    <app
+        appsort:pkgName="com.baidu.searchbox" />
+    <!-- 今日头条 -->
+    <app
+        appsort:pkgName="com.ss.android.article.news" />
+    <!-- 新浪微博 -->
+    <app
+        appsort:pkgName="com.sina.weibog3" />
+    <!-- 乐视视频 -->
+    <app
+        appsort:pkgName="com.letv.android.client" />
+    <!-- 诗词中国 -->
+    <app
+        appsort:pkgName="com.founder.poetry" />
+    <!-- 刀塔传奇 -->
+    <app
+        appsort:pkgName="sh.lilith.dgame.jididingzhi" />
+</apps>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright @ 2015 China Mobile Group Device Co.,Ltd.
+     All rights Reserved.
+-->
+
+<favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
+    <!-- Far-left screen [0] -->
+
+    <!-- Left screen [1] -->
+    <favorite
+        launcher:packageName="empty_screen"
+        launcher:className="empty_screen"
+        launcher:screen="1"
+        launcher:x="0"
+        launcher:y="0" />
+
+    <!-- Right screen [2] -->
+    <!-- 搜索 -->
+    <appwidget
+        launcher:packageName="com.android.quicksearchbox"
+        launcher:className="com.android.quicksearchbox.SearchWidgetProvider"
+        launcher:screen="2"
+        launcher:x="0"
+        launcher:y="0"
+        launcher:spanX="4"
+        launcher:spanY="1" />
+    <!-- MM商场 -->
+    <favorite
+        launcher:packageName="com.aspire.mm"
+        launcher:className="com.aspire.mm.app.HotSaleActivity"
+        launcher:screen="2"
+        launcher:x="0"
+        launcher:y="4" />
+    <!-- 飞信 -->
+    <favorite
+        launcher:packageName="cn.com.fetion"
+        launcher:className="cn.com.fetion.activity.LaunchActivity"
+        launcher:screen="2"
+        launcher:x="1"
+        launcher:y="4" />
+    <!-- 咪咕音乐 -->
+    <favorite
+        launcher:packageName="com.andreader.prein"
+        launcher:className="com.cmread.bplusc.bookshelf.LocalMainActivity"
+        launcher:screen="2"
+        launcher:x="2"
+        launcher:y="4" />
+    <!-- 139邮箱 -->
+    <favorite
+        launcher:packageName="cn.cj.pe"
+        launcher:className="com.mail139.about.LaunchActivity"
+        launcher:screen="2"
+        launcher:x="3"
+        launcher:y="4" />
+
+    <!-- Right screen [3] -->
+    <appwidget
+        launcher:packageName="com.cmcc.personalcenter"
+        launcher:className="com.cmcc.personalcenter.UserCenterMiniWidget"
+        launcher:screen="3"
+        launcher:x="0"
+        launcher:y="0"
+        launcher:spanX="4"
+        launcher:spanY="2" />
+    <resolve
+        launcher:container="-100"
+        launcher:screen="3"
+        launcher:x="0"
+        launcher:y="4" >
+        <favorite
+            launcher:packageName="com.android.browser"
+            launcher:className="com.android.browser.BrowserActivity" />
+        <favorite
+            launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_BROWSER;end" />
+        <favorite launcher:uri="http://www.example.com/" />
+    </resolve>
+    <resolve
+        launcher:container="-100"
+        launcher:screen="3"
+        launcher:x="1"
+        launcher:y="4" >
+        <favorite
+            launcher:className="com.android.gallery3d.app.GalleryActivity"
+            launcher:packageName="com.android.gallery3d" />
+        <favorite
+            launcher:className="com.android.gallery3d.app.Gallery"
+            launcher:packageName="com.android.gallery3d" />
+    </resolve>
+    <resolve
+        launcher:container="-100"
+        launcher:screen="3"
+        launcher:x="2"
+        launcher:y="4" >
+        <favorite
+            launcher:packageName="com.jrdcom.filemanager"
+            launcher:className="com.jrdcom.filemanager.activity.FileBrowserActivity" />
+        <favorite
+            launcher:packageName="com.tct.filemanager"
+            launcher:className="com.tct.filemanager.activity.FileBaseActivity" />
+        <favorite
+            launcher:packageName="com.hmct.FileManager.Activity"
+            launcher:className="com.hmct.FileManager.Activity.ClassifyFileManager" />
+    </resolve>
+     <!-- 一键清理Widget -->
+    <appwidget
+        launcher:packageName="com.cmdc.phonekeeper"
+        launcher:className="com.cmdc.phonekeeper.ClearWidget"
+        launcher:screen="3"
+        launcher:x="3"
+        launcher:y="3"
+        launcher:spanX="1"
+        launcher:spanY="1" />
+    <favorite
+        launcher:packageName="com.cmdc.phonekeeper"
+        launcher:className="com.cmdc.phonekeeper.PhoneKeeperMainActivity"
+        launcher:screen="3"
+        launcher:x="3"
+        launcher:y="4" />
+    <!-- screen [4] -->
+    <!-- 彩云Widget -->
+    <appwidget
+        launcher:packageName="com.chinamobile.mcloud.account"
+        launcher:className="com.android.chinamobile.account.widget.MCloudAppWidgetProvider"
+        launcher:screen="4"
+        launcher:x="0"
+        launcher:y="0"
+        launcher:spanX="4"
+        launcher:spanY="2" />
+    <!-- 设置 -->
+    <resolve
+        launcher:container="-100"
+        launcher:screen="4"
+        launcher:x="0"
+        launcher:y="4" >
+        <favorite
+            launcher:className="com.android.settings.SettingsTab"
+            launcher:packageName="com.android.settings" />
+        <favorite
+            launcher:className="com.android.settings.Settings"
+            launcher:packageName="com.android.settings" />
+    </resolve>
+    <!-- 时钟 -->
+    <favorite
+        launcher:packageName="com.android.deskclock"
+        launcher:className="com.android.deskclock.DeskClock"
+        launcher:screen="4"
+        launcher:x="1"
+        launcher:y="4" />
+    <!-- 日历 -->
+    <favorite
+        launcher:packageName="com.android.calendar"
+        launcher:className="com.android.calendar.AllInOneActivity"
+        launcher:screen="4"
+        launcher:x="2"
+        launcher:y="4" />
+    <!-- 备份恢复 -->
+    <favorite
+        launcher:packageName="com.android.backup"
+        launcher:className="com.android.backup.TsMainBackActivity"
+        launcher:screen="4"
+        launcher:x="3"
+        launcher:y="4" />
+
+    <!-- screen [5] -->
+    <favorite
+        launcher:packageName="empty_screen"
+        launcher:className="empty_screen"
+        launcher:screen="5"
+        launcher:x="0"
+        launcher:y="0" />
+
+    <!-- Far-right screen [5] -->
+
+    <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
+    <!-- Dialer, Contacts, [All Apps], Messaging, Browser -->
+    <resolve
+        launcher:container="-101"
+        launcher:screen="0"
+        launcher:x="0"
+        launcher:y="0" >
+        <favorite
+            launcher:packageName="com.android.contacts"
+            launcher:className="com.android.dialer.DialtactsActivity" />
+
+        <favorite launcher:uri="#Intent;action=android.intent.action.DIAL;end" />
+        <favorite launcher:uri="tel:123" />
+        <favorite launcher:uri="#Intent;action=android.intent.action.CALL_BUTTON;end" />
+
+        <favorite
+            launcher:packageName="com.android.dialer"
+            launcher:className="com.android.dialer.DialtactsActivity" />
+    </resolve>
+
+    <favorite
+        launcher:packageName="com.android.contacts"
+        launcher:className="com.android.contacts.activities.PeopleActivity"
+        launcher:container="-101"
+        launcher:screen="1"
+        launcher:x="1"
+        launcher:y="0" />
+
+    <resolve
+        launcher:container="-101"
+        launcher:screen="3"
+        launcher:x="3"
+        launcher:y="0" >
+        <favorite
+            launcher:packageName="com.android.mms"
+            launcher:className="com.android.mms.ui.ModeChooser" />
+        <favorite
+            launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MESSAGING;end" />
+        <favorite launcher:uri="sms:" />
+        <favorite launcher:uri="smsto:" />
+        <favorite launcher:uri="mms:" />
+        <favorite launcher:uri="mmsto:" />
+
+        <favorite
+            launcher:packageName="com.android.mms"
+            launcher:className="com.android.mms.ui.ConversationList" />
+    </resolve>
+    <resolve
+        launcher:container="-101"
+        launcher:screen="4"
+        launcher:x="4"
+        launcher:y="0" >
+        <favorite
+            launcher:packageName="com.android.camera2"
+            launcher:className="com.android.camera.CameraLauncher" />
+        <favorite
+            launcher:packageName="com.android.camera"
+            launcher:className="com.android.camera.Camera" />
+        <favorite
+            launcher:packageName="com.android.gallery3d"
+            launcher:className="com.android.camera.CameraLauncher" />
+    </resolve>
+
+</favorites>

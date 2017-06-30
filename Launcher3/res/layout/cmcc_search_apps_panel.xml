@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+===================================================================================
+|   when    |    who       |    keyword      |      why        |    what         |
+===================================================================================
+20160616     liyichong.wt   bug 187645        bug               add cursor for EditView
+20160621     liyichong.wt   bug 189689        bug               modify search app title background
+===================================================================================
+-->
+<com.android.launcher3.CmccN2CmccSearchAppsView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleX="0.1"
+    android:scaleY="0.1"
+    android:visibility="gone"
+    android:alpha="0" >
+    <LinearLayout
+        android:id="@+id/search_edit_frame"
+        android:layout_width="match_parent"
+        android:layout_height="76dip"
+        android:background="#e9e9e9"
+        android:gravity="center" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/search_bg"
+            android:orientation="horizontal" >    
+            <ImageView
+                android:id="@+id/dismiss_search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/all_apps_button_label"
+                android:src="@drawable/search" />
+
+            <com.android.launcher3.CmccN2ExtendedEditText
+                android:id="@+id/search_box_input"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:focusableInTouchMode="true"
+                android:layout_gravity="fill_horizontal|center_vertical"
+                android:hint="@string/search_apps_title"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
+                android:inputType="text|textNoSuggestions|textCapWords"
+                android:imeOptions="actionSearch|flagNoExtractUi"
+                android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="#4c4c4c"
+                android:textColorHint="#9c9c9c"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.android.launcher3.CmccGridView
+        android:id="@+id/frequent_used_apps_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:numColumns="@integer/frequent_used_apps_grid_column"
+        android:listSelector="@null"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dip"
+        android:horizontalSpacing="5dip"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_below="@id/search_edit_frame" />
+
+    <TextView
+        android:id="@+id/frequent_used_apps_empty_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="18sp"
+        android:text="@string/frequent_used_apps_empty_tips"
+        android:textColor="@android:color/white"
+        android:visibility="invisible"/>
+
+</com.android.launcher3.CmccN2CmccSearchAppsView>

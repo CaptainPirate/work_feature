@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="news_activity_bg_color">#f3f4f5</color>
+    <color name="news_common_red">#FF463D</color>
+    <color name="news_common_title_color">#505050</color>
+    <color name="news_item_divider_color">#1A000000</color>
+    <color name="news_list_divider_bg">#f3f4f5</color>
+    <color name="news_list_item_normal">#FFFFFF</color>
+    <color name="news_list_item_pressed">#F0F0F0</color>
+    <color name="news_no_pic_color">#e7e9eb</color>
+    <color name="news_tip_text_color">#959aa0</color>
+    <declare-styleable name="RangeLinearLayout"><attr format="dimension" name="news_max_height"/><attr format="dimension" name="news_max_width"/></declare-styleable>
+    <dimen name="news_common_margin_left_right">17dp</dimen>
+    <dimen name="news_common_margin_top_bottom">25dp</dimen>
+    <dimen name="news_dislike_popwindow_height">31dp</dimen>
+    <dimen name="news_dislike_popwindow_width">85dp</dimen>
+    <dimen name="news_item_divider_height">8dp</dimen>
+    <dimen name="news_item_info_margin_left">3dp</dimen>
+    <dimen name="news_item_right_pic_height">70dp</dimen>
+    <dimen name="news_item_right_pic_width">108dp</dimen>
+    <dimen name="news_title_tts_read_flag_margintop">3dp</dimen>
+    <dimen name="news_tts_float_view_padding">20dp</dimen>
+    <dimen name="news_txtsize_btn_dislike">14sp</dimen>
+    <dimen name="news_xlistview_loading_height">60dp</dimen>
+    <dimen name="news_xlistview_other_tip_height">32dp</dimen>
+    <item name="news_img_tag_id" type="id"/>
+    <item name="news_negative_btn" type="id"/>
+    <item name="news_neutral_btn" type="id"/>
+    <item name="news_positive_btn" type="id"/>
+    <string name="news_app">小飞读报</string>
+    <string name="news_begin_read">开始阅读</string>
+    <string name="news_cancel">取消</string>
+    <string name="news_copyright_title">用户使用协议</string>
+    <string name="news_current_broadcast">当前播报</string>
+    <string name="news_enter_page">进入界面</string>
+    <string name="news_introduction_text">这里有丰富又优质的新闻资讯，轻松又便捷的阅读体验，快快点击下方按钮开启一段神奇之旅</string>
+    <string name="news_leave_page">离开界面</string>
+    <string name="news_load_error_tip">数据加载失败，请稍后重试</string>
+    <string name="news_load_more_text">查看更多</string>
+    <string name="news_loading">资讯流</string>
+    <string name="news_loading_text">正在加载...</string>
+    <string name="news_no_interest">不感兴趣</string>
+    <string name="news_personalized_hint_text">请在下方选择您感兴趣的资讯分类</string>
+    <string name="news_select_all">全选</string>
+    <style name="BaseDialog" parent="android:style/Theme.Dialog">
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="style_little_title">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/news_common_title_color</item>
+    </style>
+    <style name="style_news_info">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/news_tip_text_color</item>
+    </style>
+    <style name="style_news_title">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/news_common_title_color</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:lineSpacingExtra">0.0dip</item>
+    </style>
+</resources>

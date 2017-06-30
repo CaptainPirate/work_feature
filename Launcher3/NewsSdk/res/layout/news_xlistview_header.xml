@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/news_activity_bg_color"
+    android:gravity="bottom|center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/news_xlistview_header_progress_part"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/news_xlistview_loading_height"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/news_xlistview_header_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/news_app"
+            android:src="@drawable/news_ic_mainpage_loading" />
+
+        <TextView
+            android:id="@+id/news_xlistview_header_loading_hint_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="#515151"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/news_xlistview_txtview_other_tip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/news_xlistview_other_tip_height"
+        android:background="#d5e8f6"
+        android:gravity="center"
+        android:textColor="#1889dc"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+===================================================================================
+|   when    |    who       |    keyword      |      why        |    what         |
+===================================================================================
+20160512     liyichong.wt   bug 175653        requirements      modify layout
+===================================================================================
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center" >
+
+    <TextView
+        android:id="@+id/top_bar_set_home"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/set_as_home_page"
+        android:drawablePadding="@dimen/top_bar_set_home_drawablepadding"
+        android:gravity="center"
+        android:textSize="@dimen/text_view_menu_text_size" />
+
+    <TextView
+        android:id="@+id/top_bar_del_page"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/delete_page"
+        android:drawablePadding="@dimen/top_bar_del_page_drawablepadding"
+        android:layout_marginLeft="@dimen/top_bar_del_page_marginleft"
+        android:gravity="center"
+        android:textSize="@dimen/text_view_menu_text_size" />
+
+
+</LinearLayout>

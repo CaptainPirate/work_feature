@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+===================================================================================
+|   when    |    who       |    keyword      |      why        |    what         |
+===================================================================================
+20160325     liyichong.wt   bug 155067        requirements      add layout
+20160428     liyichong.wt   bug 166538        requirements      modify margin layout
+20160428     liyichong.wt   bug 166538        requirements      delete layout_marginBottom
+20160613     liyichong.wt   bug 186283        bug               modify wallpaper layout
+===================================================================================
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+        <GridView  
+            android:id="@+id/GridView"  
+            android:layout_width="match_parent"  
+            android:layout_height="match_parent"
+            android:numColumns="3"
+            android:verticalSpacing="9dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center" />
+
+</LinearLayout>

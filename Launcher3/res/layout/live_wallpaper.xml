@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+===================================================================================
+|   when    |    who       |    keyword      |      why        |    what         |
+===================================================================================
+20160325     liyichong.wt   bug 155067        requirements      add layout
+===================================================================================
+-->
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/LiveWallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+</LinearLayout>

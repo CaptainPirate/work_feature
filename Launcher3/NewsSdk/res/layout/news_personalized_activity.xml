@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <com.iflytek.news.ui.PageTitle
+        android:id="@+id/news_pager_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp" />
+
+    <ListView
+        android:id="@+id/news_channel_select"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#1f000000"
+        android:dividerHeight="1px"
+        android:listSelector="@android:color/transparent"
+        android:overScrollMode="never"
+        android:scrollbarThumbVertical="@drawable/news_listview_scrollbar" />
+</LinearLayout>

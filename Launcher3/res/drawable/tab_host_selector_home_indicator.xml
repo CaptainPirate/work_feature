@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+ <layer-list    
+   xmlns:android="http://schemas.android.com/apk/res/android">   
+    <!--图片2-->  
+     <item android:id="@+id/user_face_drawable"   
+           android:drawable="@android:color/holo_blue_light"
+           />    
+    <!--图片1-->  
+     <item android:id="@+id/user_faceback_drawable"  
+           android:drawable="@color/wallpaper_title_color"
+           android:bottom="4dp"
+           />    
+ </layer-list>   

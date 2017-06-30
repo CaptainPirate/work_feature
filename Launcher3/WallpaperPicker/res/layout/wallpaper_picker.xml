@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2013, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<!--
+===================================================================================
+|   when    |    who       |    keyword      |      why        |    what         |
+===================================================================================
+20160325     liyichong.wt   bug 155067        requirements      modify layout
+20160407     liyichong.wt   bug 155069        requirements      modify layout
+20160412     liyichong.wt   bug 155069        requirements      modify layout
+===================================================================================
+-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wallpaper_root"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/mainPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/crop_menu"
+        android:orientation="vertical" >
+        <FrameLayout
+            android:id="@+id/cropview_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.android.launcher3.CropView
+                android:id="@+id/cropView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <!-- bug 155069, liyichong.wt, ADD, 20160412 start -->
+            <ImageView
+                android:id="@+id/geometry_shadow_top"
+                android:layout_width="fill_parent"
+                android:layout_height="176dp"
+                android:visibility="invisible"
+                android:background="@color/geometry_shadow_color"/>
+            <ImageView
+                android:id="@+id/geometry_shadow_bottom"
+                android:layout_width="fill_parent"
+                android:layout_gravity="bottom"
+                android:layout_height="84.7dp"
+                android:visibility="invisible"
+                android:background="@color/geometry_shadow_color"/>
+            <!-- bug 155069, liyichong.wt, ADD, 20160412 end -->
+            <ProgressBar
+                android:id="@+id/loading"
+                style="@android:style/Widget.Holo.ProgressBar.Large"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                android:indeterminateOnly="true"
+                android:background="@android:color/transparent" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="30dp"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+                    <!-- bug 155069, liyichong.wt, MODIFY, 20160412 start -->
+                    <Button
+                        android:id="@+id/crop_one_screen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:drawableTop="@drawable/one_screen_press"
+                        android:textColor="@color/crop_title_color_press"
+                        android:textSize="10dp"
+                        android:text="@string/wallpaper_fixed" />
+                    <!-- bug 155069, liyichong.wt, MODIFY, 20160412 end -->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+                    <!-- bug 155069, liyichong.wt, MODIFY, 20160412 start -->
+                    <Button
+                        android:id="@+id/crop_two_screen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:drawableTop="@drawable/two_screen"
+                        android:textColor="@color/crop_title_color"
+                        android:textSize="10dp"
+                        android:text="@string/wallpaper_scrolling" />
+                    <!-- bug 155069, liyichong.wt, MODIFY, 20160412 end -->
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/crop_menu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_gravity="bottom"
+            android:background="#ffffff"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:divider="@null"
+                android:gravity="center" >
+
+                <Button
+                    android:id="@+id/fbtn_cancel"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="150dp"
+                    android:layout_height="40.0dip"
+                    android:layout_gravity="center"
+                    android:text="@android:string/cancel"
+                    android:textColor="#030303" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:divider="@null"
+                android:gravity="center" >
+
+                <Button
+                    android:id="@+id/fbtn_ok"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="150dp"
+                    android:layout_height="40.0dip"
+                    android:layout_gravity="center"
+                    android:text="@string/save"
+                    android:textColor="#0fa600" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
