@@ -9,3 +9,6 @@
 
 # 2017/06/30
 计事本
+
+# 2017/07/08
+高通平台filemanager无法分享txt文件到gooogle 套件copy to clipdo
