@@ -12,3 +12,6 @@
 
 # 2017/07/08
 高通平台filemanager无法分享txt文件到gooogle 套件copy to clipdo
+
+# 2017/07/08
+android 7.0访问文件，打开相机功能 fileProvider模式
