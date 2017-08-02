@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- This layout is shared by phone and tablet in both landscape and portrait
+ orientation. The purpose of having this layout is to eventually not manually
+ recreate views when the orientation changes, by migrating the views that do not
+ need to be recreated in onConfigurationChanged from old photo_module to this
+ layout. -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" >
+    <include layout="@layout/count_down_to_capture" />
+    <include layout="@layout/selfie_flash_view" />
+    <FrameLayout
+        android:id="@+id/preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal" >
+        <SurfaceView
+            android:id="@+id/mdp_preview_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+    <View
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+    <RelativeLayout android:id="@+id/linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/progress"
+            android:orientation="vertical"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dip"
+            android:layout_marginBottom="14dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip" />
+        <com.android.camera.GraphView
+            android:id="@+id/graph_view"
+            android:layout_width="200dip"
+            android:layout_height="200dip"
+            android:layout_marginTop="60dip"
+            android:layout_marginLeft="90dip" />
+        <com.android.camera.DrawAutoHDR
+            android:id="@+id/autohdr_view"
+            android:layout_width="200dip"
+            android:layout_height="200dip"
+            android:layout_marginTop="50dip"
+            android:layout_marginLeft="15dip" />
+    </RelativeLayout>
+    <com.android.camera.ui.RotateImageView
+        android:id="@+id/review_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:background="@android:color/black"
+        android:scaleType="fitCenter"/>
+    <View
+        android:id="@+id/flash_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        android:alpha="0" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ViewStub android:id="@+id/face_view_stub"
+            android:inflatedId="@+id/face_view"
+            android:layout="@layout/face_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </FrameLayout>
+    <com.android.camera.ui.RenderOverlay
+        android:id="@+id/render_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <include layout="@layout/camera_controls"
+        android:layout_gravity="center"
+        style="@style/CameraControls"/>
+    <include layout="@layout/menu_help"
+        android:layout_gravity="center"
+        style="@style/CameraControls"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ts_makeup_level_view_port_soften"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="95dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:visibility="gone"
+        android:background="#44000000" >
+        <ImageView
+            android:id="@+id/id_iv_makeup_arrow_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:src="@drawable/icon_arrow_down" />
+        <LinearLayout
+            android:id="@+id/id_makeup_clean_layout"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp">
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/id_iv_makeup_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_ts_makeup_clean_selector" />
+            <SeekBar
+                android:id="@+id/clean_seekbar_makeup_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:thumbOffset="8dp"
+                style="@android:style/Widget.Material.SeekBar" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/id_makeup_whiten_layout"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:clickable="true"
+            android:paddingBottom="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/id_iv_makeup_whiten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_ts_makeup_whiten_selector" />
+            <SeekBar
+                android:id="@+id/whiten_seekbar_makeup_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:thumbOffset="8dp"
+                style="@android:style/Widget.Material.SeekBar" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/id_makeup_face_layout"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:paddingBottom="4dp"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/id_iv_makeup_face"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_ts_makeup_face" />
+            <SeekBar
+                android:id="@+id/face_seekbar_makeup_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:thumbOffset="8dp"
+                style="@android:style/Widget.Material.SeekBar" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/id_makeup_eye_layout"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:paddingBottom="4dp"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/id_iv_makeup_eye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_ts_makeup_eye" />
+            <SeekBar
+                android:id="@+id/eye_seekbar_makeup_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:thumbOffset="8dp"
+                style="@android:style/Widget.Material.SeekBar" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/id_iv_makeup_arrow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:src="@drawable/icon_arrow_up" />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/id_tsmakeup_level_layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</merge>
