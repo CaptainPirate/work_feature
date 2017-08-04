@@ -1134,7 +1134,7 @@ public class CameraControls extends RotatableLayout {
 
     public void setPreviewRatio(float ratio, boolean panorama) {
         if (panorama) {
-            mPaint.setColor(getResources().getColor(R.color.camera_control_bg_transparent));//设置画笔的颜色，就是最下面那个黑框
+            mPaint.setColor(getResources().getColor(R.color.camera_control_bg_transparent));//设置画笔的颜色，就是最下面那个黑框条
         } else {
             int r = CameraUtil.determineRatio(ratio);
             mPreviewRatio = r;

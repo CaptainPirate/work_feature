@@ -1736,7 +1736,8 @@ public class FilmStripView extends ViewGroup implements BottomControlsListener {
         mDataAdapter.setListener(new DataAdapter.Listener() {
             @Override
             public void onDataLoaded() {
-                mActivity.updateThumbnail(false);
+            Log.e(TAG, "hss1 onDataLoaded");
+                mActivity.updateThumbnail(false);//更新缩略图
                 if (!mIsLoaded)
                     reload();
                 mIsLoaded = true;
@@ -1751,11 +1752,13 @@ public class FilmStripView extends ViewGroup implements BottomControlsListener {
             public void onDataInserted(int dataID, ImageData data) {
                 if (mViewItem[mCurrentItem] == null) {
                     // empty now, simply do a reload.
+            Log.e(TAG, "hss2 onDataInserted reload");
                     reload();
                     return;
                 }
                 updateInsertion(dataID);
-                mActivity.updateThumbnail(true);
+            Log.e(TAG, "hss3 onDataInserted updateThumbnail");
+                mActivity.updateThumbnail(true);//更新缩略图
             }
 
             @Override

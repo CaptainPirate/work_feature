@@ -1503,7 +1503,9 @@ public class PhotoModule
                             } else {
                                 mUI.setDownFactor(4);
                             }
+        Log.v(TAG, "hss mAnimateCapture ="+mAnimateCapture);
                             if (mAnimateCapture) {
+        Log.v(TAG, "hss mAnimateCapture come");
                                 mUI.animateCapture(jpegData);//这个就是更新缩略图
                             }
                         } else {//连拍模式不需要每张都生成缩略图，只需将最后一张作为缩略图
@@ -2030,7 +2032,7 @@ public class PhotoModule
             mUI.overrideSettings(CameraSettings.KEY_LONGSHOT, null);
         }
 
-        if(TsMakeupManager.HAS_TS_MAKEUP) {
+        if(TsMakeupManager.HAS_TS_MAKEUP) {//美颜是否开启
             IconListPreference tsMakeupLevelPref = (IconListPreference) mPreferenceGroup
                     .findPreference(CameraSettings.KEY_TS_MAKEUP_LEVEL);
             if (tsMakeupLevelPref != null &&
@@ -2313,9 +2315,9 @@ public class PhotoModule
         if (mCameraDevice == null
                 || mPaused || mUI.collapseCameraControls()
                 || (mCameraState == SNAPSHOT_IN_PROGRESS)
-                || (mCameraState == PREVIEW_STOPPED)
-                || (null == mFocusManager)) {
-            Log.v(TAG, "onShutterButtonFocus error case mCameraState = " + mCameraState
+                || (mCameraState == PREVIEW_STOPPED)//如果满足这些条件下面包括缩略就不会decode
+                || (null == mFocusManager)) {//onShutterButtonFocus error case mCameraState = 0mCameraDevice = nullmPaused =true
+            Log.v(TAG, "hss onShutterButtonFocus error case mCameraState = " + mCameraState
                 + "mCameraDevice = " + mCameraDevice + "mPaused =" + mPaused);
             return;
         }
@@ -2325,6 +2327,7 @@ public class PhotoModule
                mLongshotActive = false;
                mUI.showUIAfterCountDown();///:[ICE15-1988]
                mCameraDevice.setLongshot(false);
+        Log.v(TAG, "hss onShutterButtonFocus");
                mUI.animateCapture(mLastJpegData);//更新缩略图，因为是连拍所以只更新最后一张图片的缩略图
                mLastJpegData = null;
                if (!mFocusManager.isZslEnabled()) {
@@ -2874,6 +2877,7 @@ public class PhotoModule
                     //add by muxudong for ICE2-1025 hidden beauty icons when press the volume key end
                 }
             case KeyEvent.KEYCODE_FOCUS:
+        Log.v(TAG, "hss KeyEvent.KEYCODE_FOCUS");
                 if (/*TODO: mActivity.isInCameraApp() &&*/ mFirstTimeInitialized) {
                     if (event.getRepeatCount() == 0) {
                         onShutterButtonFocus(true);
@@ -2929,6 +2933,7 @@ public class PhotoModule
             }
             break;
             case KeyEvent.KEYCODE_DPAD_CENTER:
+        Log.v(TAG, "hss KeyEvent.KEYCODE_DPAD_CENTER");
                 // If we get a dpad center event without any focused view, move
                 // the focus to the shutter button and press it.
                 if (mFirstTimeInitialized && event.getRepeatCount() == 0) {
@@ -2962,6 +2967,7 @@ public class PhotoModule
                                 Toast.LENGTH_SHORT).show();
                 return true;
             case KeyEvent.KEYCODE_FOCUS:
+        Log.v(TAG, "hss KeyEvent.KEYCODE_FOCUS");
                 if (mFirstTimeInitialized) {
                     onShutterButtonFocus(false);//比如连拍松开按钮后就会调用这个在里面更新缩略图
                 }
@@ -4154,12 +4160,12 @@ public class PhotoModule
             }
         }
         // add by muxudong for arc algorithm makeup, hdr and night mutex end
-        mParameters.set(CameraSettings.KEY_TS_MAKEUP_PARAM, makeupParamValue);
+        mParameters.set(CameraSettings.KEY_TS_MAKEUP_PARAM, makeupParamValue);//设置磨皮数值
         Log.v(TAG,"updateCameraParametersPreference(): TSMakeup " + CameraSettings.KEY_TS_MAKEUP_PARAM +" value = " + makeupParamValue);
 
         if(TsMakeupManager.MAKEUP_ON.equals(makeupParamValue)) {
             String makeupWhitenValue = mPreferences.getString(CameraSettings.KEY_TS_MAKEUP_LEVEL_WHITEN,
-                    mActivity.getString(R.string.pref_camera_tsmakeup_whiten_default));
+                    mActivity.getString(R.string.pref_camera_tsmakeup_whiten_default));//美白数值
             String makeupCleanValue = mPreferences.getString(CameraSettings.KEY_TS_MAKEUP_LEVEL_CLEAN,
                     mActivity.getString(R.string.pref_camera_tsmakeup_clean_default));
 

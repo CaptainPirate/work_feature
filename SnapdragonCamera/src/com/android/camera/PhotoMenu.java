@@ -733,7 +733,7 @@ public class PhotoMenu extends MenuController
         mListMenu.overrideSettings(keyvalues);
     }
 
-    protected void initializePopup() {
+    protected void initializePopup() {//初始化popmenu，比如按下setting弹出设置menu
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         ListMenu popup1 = (ListMenu) inflater.inflate(
@@ -741,11 +741,11 @@ public class PhotoMenu extends MenuController
 
         popup1.setSettingChangedListener(this);
 
-        String[] keys = mOtherKeys1;
+        String[] keys = mOtherKeys1;//Key就是对应的listitem选项，不过这些都是理论显示项，下面还会根据实际支持等过滤是否显示或者是否可点
         if (mActivity.isDeveloperMenuEnabled())
             keys = mOtherKeys2;
-        popup1.initialize(mPreferenceGroup, keys);
-        if (mActivity.isSecureCamera()) {
+        popup1.initialize(mPreferenceGroup, keys);//popmenu初始化数据，即mListMenu要显示的选项
+        if (mActivity.isSecureCamera()) {//如果是安全模似比如安全锁进camera则gps信息选项不可点击，即不可用
             // Prevent location preference from getting changed in secure camera
             // mode
             popup1.setPreferenceEnabled(CameraSettings.KEY_RECORD_LOCATION, false);

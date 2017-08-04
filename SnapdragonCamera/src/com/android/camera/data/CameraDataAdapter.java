@@ -60,6 +60,7 @@ public class CameraDataAdapter implements LocalDataAdapter {
 
     @Override
     public void requestLoad(ContentResolver resolver) {
+            Log.e(TAG, "hss requestLoad come");
         QueryTask qtask = new QueryTask();
         qtask.execute(resolver);
     }

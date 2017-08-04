@@ -493,7 +493,7 @@ public class PhotoUI implements PieListener,
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.v(TAG, "surfaceCreated");
+        Log.v(TAG, "hss surfaceCreated");
         mSurfaceHolder = holder;
         mController.onPreviewUIReady();
         mActivity.updateThumbnail(mThumbnail);//如果mThumbnail为空就不显示
@@ -553,7 +553,8 @@ public class PhotoUI implements PieListener,
 
     public void animateCapture(final byte[] jpegData) {
         // Decode jpeg byte array and then animate the jpeg
-        mActivity.updateThumbnail(jpegData);
+        Log.v(TAG, "hss animateCapture");
+        mActivity.updateThumbnail(jpegData);//hss
     }
 
     public void showRefocusToast(boolean show) {

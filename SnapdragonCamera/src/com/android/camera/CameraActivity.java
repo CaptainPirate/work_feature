@@ -743,12 +743,14 @@ public class CameraActivity extends Activity
     }
 
     public void updateThumbnail(final byte[] jpegData) {
+                        Log.w(TAG, "hss66_6 updateThumbnail byte[]");
         if (mUpdateThumbnailTask != null) mUpdateThumbnailTask.cancel(true);
         mUpdateThumbnailTask = new UpdateThumbnailTask(jpegData, true);
         mUpdateThumbnailTask.execute();
     }
 
     public void updateThumbnail(final Bitmap bitmap) {
+                        Log.w(TAG, "hss66_8 updateThumbnail bitmap");
         if (bitmap == null) return;
         mThumbnailDrawable = new CircularDrawable(bitmap);
         if (mThumbnail != null) {
@@ -764,25 +766,32 @@ public class CameraActivity extends Activity
     }
 
     public void updateThumbnail(ImageView thumbnail) {
+                        Log.w(TAG, "hss66_9 updateThumbnail thumbnail="+thumbnail);
         mThumbnail = thumbnail;
         if (mThumbnail == null) return;
+                        Log.w(TAG, "hss66_9_1 updateThumbnail thumbnail mThumbnailDrawable="+mThumbnailDrawable);
         if (mThumbnailDrawable != null) {
+                         Log.w(TAG, "hss66_9_2 updateThumbnail mThumbnailDrawable not null");
             mThumbnail.setImageDrawable(mThumbnailDrawable);
             //modify by wangshenxing [ICE2-1325] 2017/06/05 start
             if (com.huaqin.common.featureoption.FeatureOption.HQ_1520_SECURE_CAMERA_SHOW_THUMBNAIL || !isSecureCamera()) {
             //modify by wangshenxing [ICE2-1325] 2017/06/05 end
+                         Log.w(TAG, "hss66_9_3 updateThumbnail mThumbnailDrawable not null VISIBLE");
                 mThumbnail.setVisibility(View.VISIBLE);
             } else {
+                         Log.w(TAG, "hss66_9_5 updateThumbnail mThumbnailDrawable not null GONE");
                 mThumbnail.setVisibility(View.GONE);
             }
         }
     }
 
     public void updateThumbnail(boolean videoOnly) {
+                        Log.w(TAG, "hss66_3 updateThumbnail videoOnly="+videoOnly);
         // Only handle OnDataInserted if it's video.
         // Photo and Panorama have their own way of updating thumbnail.
         if (!videoOnly || (mCurrentModule instanceof VideoModule) ||
                 ((mCurrentModule instanceof CaptureModule) && videoOnly)) {
+                        Log.w(TAG, "hss66_3 updateThumbnail videoOnly execute");
             (new UpdateThumbnailTask(null, true)).execute();
         }
     }
@@ -801,8 +810,8 @@ public class CameraActivity extends Activity
             if (mJpegData != null)
                 return decodeImageCenter(null);
 
-            LocalDataAdapter adapter = getDataAdapter();
-            ImageData img = adapter.getImageData(1);
+            LocalDataAdapter adapter = getDataAdapter();//如果传递过来的图片为空就获取本地首张图（即最后拍摄的图片）来decode缩略图
+            ImageData img = adapter.getImageData(1);//实现在CameraDataAdapter
             if (img == null) {
                 return null;
             }
@@ -824,12 +833,18 @@ public class CameraActivity extends Activity
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             if (bitmap == null) {
+                        Log.w(TAG, "hss66_8_1 updateThumbnail bitmap");
                 if (mThumbnail != null) {
                     // Clear the image resource when the bitmap is invalid.
                     mThumbnail.setImageDrawable(null);
                     mThumbnail.setVisibility(View.GONE);
                 }
             } else {
+                        Log.w(TAG, "hss66_8_2 updateThumbnail bitmap");
+                
+            Log.e(TAG,"hss777=========================================start");//Thread.dumpStack()
+            Thread.dumpStack();
+            Log.e(TAG,"hss777=========================================end");
                 updateThumbnail(bitmap);
             }
 
@@ -1519,7 +1534,7 @@ public class CameraActivity extends Activity
 
         mOrientationListener = new MyOrientationEventListener(this);
         setModuleFromIndex(moduleIndex);//设置当前的模式，并展示当前模式的视图，只有这一步中通过线程开启camera才有preview视图
-        setContentView(R.layout.camera_filmstrip);//长拍模式
+        setContentView(R.layout.camera_filmstrip);//长拍模式hss???
         mFilmStripView = (FilmStripView) findViewById(R.id.filmstrip_view);
 
         mActionBar = getActionBar();
@@ -1561,9 +1576,9 @@ public class CameraActivity extends Activity
 
         if (!mSecureCamera) {//如果不是安全模式拍照正常打开图片
             mDataAdapter = mWrappedDataAdapter;
-            mFilmStripView.setDataAdapter(mDataAdapter);
+            mFilmStripView.setDataAdapter(mDataAdapter);//在这里会触发调用mActivity.updateThumbnail 更新缩略图
             if (!isCaptureIntent()) {
-                mDataAdapter.requestLoad(getContentResolver());
+                mDataAdapter.requestLoad(getContentResolver());//通过ContentResolver如果有数据变动（拍照了）就会触发更新缩略图
                 mDataRequested = true;
             }
         } else {//如果是安全模式拍照就使用安全模式打开图片
@@ -1593,7 +1608,7 @@ public class CameraActivity extends Activity
                             0, 0));
             // Flush out all the original data.
             mDataAdapter.flush();
-            mFilmStripView.setDataAdapter(mDataAdapter);
+            mFilmStripView.setDataAdapter(mDataAdapter);//在这里会触发调用mActivity.updateThumbnail 更新缩略图
         }
 
         setupNfcBeamPush();
@@ -1751,6 +1766,7 @@ public class CameraActivity extends Activity
 
     @Override
     public void onResume() {
+                        Log.w(TAG, "hss onResume");
 		if (isInMultiWindowMode()){// add for ICE15-669 & ICE15-718
 			super.onResume();
             Log.v(TAG, "onResume: Don't support split screen !");
@@ -1788,16 +1804,16 @@ public class CameraActivity extends Activity
         // starting an activity we want to return from to the filmstrip rather
         // than the preview.
         mResetToPreviewOnResume = true;
-
+        
+                        Log.w(TAG, "hss mLocalVideosObserver.isMediaDataChangedDuringPause()"+mLocalVideosObserver.isMediaDataChangedDuringPause());
+                        Log.w(TAG, "hss mLocalImagesObserver.isMediaDataChangedDuringPause()"+mLocalImagesObserver.isMediaDataChangedDuringPause());
         if (mLocalVideosObserver.isMediaDataChangedDuringPause()
-                || mLocalImagesObserver.isMediaDataChangedDuringPause()) {
+                || mLocalImagesObserver.isMediaDataChangedDuringPause()) {//判断视频数据与图片数据改变监听有没有被暂停，如果在上个操作中被暂停，就重新申请数据监听
             if (!mSecureCamera) {
                 // If it's secure camera, requestLoad() should not be called
                 // as it will load all the data.
-                mDataAdapter.requestLoad(getContentResolver());
-                if(mThumbnailDrawable!=null){
-                    updateThumbnail(mThumbnail);
-                }
+                        Log.w(TAG, "hss !mSecureCamera come requestLoad");
+                mDataAdapter.requestLoad(getContentResolver());//起一个QueryTask去查找并监听
                 mThumbnailDrawable = null;
             }
         }

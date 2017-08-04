@@ -190,7 +190,7 @@ public class CaptureUI implements FocusOverlayManager.FocusUI,
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            Log.v(TAG, "surfaceCreated");
+            Log.v(TAG, "hss surfaceCreated");
             mSurfaceHolder = holder;
             previewUIReady();
             if(mTrackingFocusRenderer != null && mTrackingFocusRenderer.isVisible()) {
@@ -241,6 +241,7 @@ public class CaptureUI implements FocusOverlayManager.FocusUI,
     private void previewUIReady() {
         if((mSurfaceHolder != null && mSurfaceHolder.getSurface().isValid())) {
             mModule.onPreviewUIReady();
+            Log.v(TAG, "hss66 previewUIReady");
             mActivity.updateThumbnail(mThumbnail);
         }
     }
