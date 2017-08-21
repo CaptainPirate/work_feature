@@ -808,7 +808,7 @@ public class CameraActivity extends Activity
         @Override
         protected Bitmap doInBackground(Void... params) {
             if (mJpegData != null)
-                return decodeImageCenter(null);
+                return decodeImageCenter(null);//如果传递过来的数据不为空，就直接decode,否则就调用下面的取最新一张图片来decode
 
             LocalDataAdapter adapter = getDataAdapter();//如果传递过来的图片为空就获取本地首张图（即最后拍摄的图片）来decode缩略图
             ImageData img = adapter.getImageData(1);//实现在CameraDataAdapter
@@ -1460,6 +1460,7 @@ public class CameraActivity extends Activity
             finish();
             return;
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);///:M[new style preview start]
         // Check if this is in the secure camera mode.
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -2058,7 +2059,7 @@ public class CameraActivity extends Activity
     }
 
     @Override
-    public void onModuleSelected(int moduleIndex) {//视图ui点击后调用这个实现来切换模式
+    public void onModuleSelected(int moduleIndex) {//模式选择ModuleSwitcher点击事件回调到这里，视图图标（拍照，录像，全景）点击后调用这个实现来切换模式
         boolean cam2on = mSettingsManager.isCamera2On();
         mForceReleaseCamera = moduleIndex == ModuleSwitcher.CAPTURE_MODULE_INDEX ||
                 (cam2on && moduleIndex == ModuleSwitcher.PHOTO_MODULE_INDEX);
@@ -2070,20 +2071,20 @@ public class CameraActivity extends Activity
                 return;
             }
         }
-        CameraHolder.instance().keep();
-        closeModule(mCurrentModule);
-        setModuleFromIndex(moduleIndex);
+        CameraHolder.instance().keep();//这个作用是啥？
+        closeModule(mCurrentModule);//关闭原来的模式，都是分发到XXXModule里面去实现
+        setModuleFromIndex(moduleIndex);//实例化一个新的模式
 
-        openModule(mCurrentModule);
+        openModule(mCurrentModule);//打开新设置的模式，都是分发到XXXModule里面去实现
         mForceReleaseCamera = false;
         mCurrentModule.onOrientationChanged(mLastRawOrientation);
-        if (mMediaSaveService != null) {
+        if (mMediaSaveService != null) {//重新设置了模式后为该模式绑定媒体存储这个service
             mCurrentModule.onMediaSaveServiceConnected(mMediaSaveService);
         }
 
         // Store the module index so we can use it the next time the Camera
         // starts up.
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);//存储当前的模式到xml文件，下次再开启camera直接进入对应模式
         prefs.edit().putInt(CameraSettings.KEY_STARTUP_MODULE_INDEX, moduleIndex).apply();
     }
 
@@ -2127,7 +2128,7 @@ public class CameraActivity extends Activity
         mCameraPhotoModuleRootView.setVisibility(View.GONE);
         mCameraVideoModuleRootView.setVisibility(View.GONE);
         mCameraPanoModuleRootView.setVisibility(View.GONE);
-        mCameraCaptureModuleRootView.setVisibility(View.GONE);
+        mCameraCaptureModuleRootView.setVisibility(View.GONE);//先让所有模式root view隐藏，再根据启动的模式显示对应模式的root view
         mCurrentModuleIndex = moduleIndex;
         switch (moduleIndex) {
             case ModuleSwitcher.VIDEO_MODULE_INDEX:

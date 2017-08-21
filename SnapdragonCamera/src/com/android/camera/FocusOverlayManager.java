@@ -452,7 +452,7 @@ public class FocusOverlayManager {
     }
 
     private void capture() {
-        if (mListener.capture()) {
+        if (mListener.capture()) {//回调PhotoModule里面的capture
             mState = STATE_IDLE;
             mHandler.removeMessages(RESET_TOUCH_FOCUS);
         }

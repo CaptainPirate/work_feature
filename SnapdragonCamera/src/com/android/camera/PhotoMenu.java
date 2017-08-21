@@ -135,11 +135,11 @@ public class PhotoMenu extends MenuController
         mFrontBackSwitcher = ui.getRootView().findViewById(R.id.front_back_switcher);
         mHdrSwitcher = ui.getRootView().findViewById(R.id.hdr_switcher);
         mTsMakeupSwitcher = ui.getRootView().findViewById(R.id.ts_makeup_switcher);
-        mSceneModeSwitcher = ui.getRootView().findViewById(R.id.scene_mode_switcher);
+        mSceneModeSwitcher = ui.getRootView().findViewById(R.id.scene_mode_switcher);//场景拍照选择按钮
         //add by wangshenxing for camera ui 2017/05/25 start
         mFlashModeSwitcher = ui.getRootView().findViewById(R.id.flash_mode_switcher);//闪光灯按钮可以作为如何添加一个按钮的例子
         //add by wangshenxing for camera ui 2017/05/25 end
-        mFilterModeSwitcher = ui.getRootView().findViewById(R.id.filter_mode_switcher);
+        mFilterModeSwitcher = ui.getRootView().findViewById(R.id.filter_mode_switcher);//滤镜选择按钮
         mMakeupListener = makeupListener;
         mSettingMenu = ui.getRootView().findViewById(R.id.menu);
         mCameraSwitcher = ui.getRootView().findViewById(R.id.camera_switcher);
@@ -171,8 +171,8 @@ public class PhotoMenu extends MenuController
             initFlashModeButton(mFlashModeSwitcher);
         }
         //add by wangshenxing for camera ui 2017/05/25 end
-        initSceneModeButton(mSceneModeSwitcher);
-        initFilterModeButton(mFilterModeSwitcher);
+        initSceneModeButton(mSceneModeSwitcher);//初始化场景拍照选择按钮
+        initFilterModeButton(mFilterModeSwitcher);//初始化滤镜按钮
         if(TsMakeupManager.HAS_TS_MAKEUP) {
             initMakeupModeButton(mTsMakeupSwitcher);
         } else {
@@ -1095,22 +1095,22 @@ public class PhotoMenu extends MenuController
     }
     //add by wangshenxing for camera ui 2017/05/25 end
 
-    public void initSceneModeButton(View button) {
+    public void initSceneModeButton(View button) {//初始化场景选择按钮，包括点击事件与按钮状态改变，得到支持的场景
         button.setVisibility(View.INVISIBLE);
         final IconListPreference pref = (IconListPreference) mPreferenceGroup
                 .findPreference(CameraSettings.KEY_SCENE_MODE);
         if (pref == null)
             return;
-        updateSceneModeIcon(pref);
+        updateSceneModeIcon(pref);//根据默认的场景设置对应的按钮图标
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSceneMode();
+                addSceneMode();//当点击了对应的图标则添加对应的场景模式，并更新上面的场景选择按钮为对应选择的场景图标
                 ViewGroup menuLayout = mUI.getPreviewMenuLayout();
                 if (menuLayout != null) {
                     View view = menuLayout.getChildAt(0);
-                    mUI.adjustOrientation();
+                    mUI.adjustOrientation();//确定方向
                     animateSlideIn(view, previewMenuSize, false);
                 }
             }
@@ -1140,14 +1140,14 @@ public class PhotoMenu extends MenuController
         WindowManager wm = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
 
-        CharSequence[] entries = pref.getEntries();
+        CharSequence[] entries = pref.getEntries();//得到场景实例，对应名称与缩略图
         CharSequence[] entryValues = pref.getEntryValues();
 
         int[] thumbnails = pref.getThumbnailIds();
 
         Resources r = mActivity.getResources();
         int height = (int) (r.getDimension(R.dimen.scene_mode_height) + 2
-                * r.getDimension(R.dimen.filter_mode_padding) + 1);
+                * r.getDimension(R.dimen.filter_mode_padding) + 1);//menu中每个场景实例视图占用长宽
         int width = (int) (r.getDimension(R.dimen.scene_mode_width) + 2
                 * r.getDimension(R.dimen.filter_mode_padding) + 1);
 
@@ -1161,7 +1161,7 @@ public class PhotoMenu extends MenuController
             gridRes = R.layout.horiz_grid;
         }
         previewMenuSize = size;
-        mUI.hideUI();
+        mUI.hideUI();//点击了场景选择按钮后弹出场景选项menulist后需要把其他无关ui隐藏起来
         mPreviewMenuStatus = PREVIEW_MENU_ON;
         mSceneStatus = MODE_SCENE;
 
@@ -1170,9 +1170,9 @@ public class PhotoMenu extends MenuController
         FrameLayout basic = (FrameLayout) inflater.inflate(
                 gridRes, null, false);
 
-        mUI.dismissSceneModeMenu();
+        mUI.dismissSceneModeMenu();//对承载所有场景实例的布局置空，不过注掉貌似也没影响
         LinearLayout previewMenuLayout = new LinearLayout(mActivity);
-        mUI.setPreviewMenuLayout(previewMenuLayout);
+        mUI.setPreviewMenuLayout(previewMenuLayout);//为所有场景实例设置一个布局载体，再通过上面animateSlideIn弹出
         ViewGroup.LayoutParams params = null;
         if (portrait) {
             params = new ViewGroup.LayoutParams(size, LayoutParams.MATCH_PARENT);
@@ -1190,7 +1190,7 @@ public class PhotoMenu extends MenuController
 
         final View[] views = new View[entries.length];
         int init = pref.getCurrentIndex();
-        for (int i = 0; i < entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {//为每个场景添加图片与名字和点击事件
             RotateLayout layout2 = (RotateLayout) inflater.inflate(
                     R.layout.scene_mode_view, null, false);
 
@@ -1208,8 +1208,8 @@ public class PhotoMenu extends MenuController
                     } else if (event.getAction() == MotionEvent.ACTION_UP) {
                         if (System.currentTimeMillis() - startTime < CLICK_THRESHOLD) {
                             pref.setValueIndex(j);
-                            onSettingChanged(pref);
-                            updateSceneModeIcon(pref);
+                            onSettingChanged(pref);//监听设置改变使对应选择的场景生效，最后都是回调PhotoModule（其它xxxModule类同）里面的 onSharedPreferenceChanged
+                            updateSceneModeIcon(pref);//对应场景模式生效后更新场景menu选择按钮图片为对应的场景即可，我们看到对应上排原来的场景选择按钮被新的场景图标替换了
                             for (View v1 : views) {
                                 v1.setBackgroundResource(R.drawable.scene_mode_view_border);
                             }
@@ -1229,7 +1229,7 @@ public class PhotoMenu extends MenuController
                 border.setBackgroundResource(R.drawable.scene_mode_view_border_selected);
             imageView.setImageResource(thumbnails[i]);
             label.setText(entries[i]);
-            layout.addView(layout2);
+            layout.addView(layout2);//设置完缩略图名称后将每个场景单元加入menulist载体
 
             // ASD only available when developer options are enabled.
             if(entryValues[i].equals("asd")) {
@@ -1268,25 +1268,25 @@ public class PhotoMenu extends MenuController
     }
     //add by wangshenxing for camera ui 2017/05/25 end
 
-    public void initFilterModeButton(View button) {
+    public void initFilterModeButton(View button) {//初始化滤镜按钮，上排menu中的三个圈圈
         button.setVisibility(View.INVISIBLE);
         final IconListPreference pref = (IconListPreference) mPreferenceGroup
-                .findPreference(CameraSettings.KEY_COLOR_EFFECT);
+                .findPreference(CameraSettings.KEY_COLOR_EFFECT);//得到配置文件里面配置的所有滤镜信息
         if (pref == null || pref.getValue() == null)
             return;
-        changeFilterModeControlIcon(pref.getValue());
+        changeFilterModeControlIcon(pref.getValue());//滤镜按钮（三个圈）数值更新，为none就灰显，不为none就蓝显
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 closeMakeup();
 
-                addFilterMode();
+                addFilterMode();//加载滤镜选项，为滤镜menu布好局
                 ViewGroup menuLayout = mUI.getPreviewMenuLayout();
                 if (menuLayout != null) {
                     View view = mUI.getPreviewMenuLayout().getChildAt(0);
-                    mUI.adjustOrientation();
-                    animateSlideIn(view, previewMenuSize, false);
+                    mUI.adjustOrientation();//确定方向
+                    animateSlideIn(view, previewMenuSize, false);//动画飞出滤镜选择menu视图
                 }
             }
         });
@@ -1294,7 +1294,7 @@ public class PhotoMenu extends MenuController
 
     public void addFilterMode() {
         final IconListPreference pref = (IconListPreference) mPreferenceGroup
-                .findPreference(CameraSettings.KEY_COLOR_EFFECT);
+                .findPreference(CameraSettings.KEY_COLOR_EFFECT);//得到配置文件中的滤镜配置项
         if (pref == null)
             return;
 
@@ -1305,7 +1305,7 @@ public class PhotoMenu extends MenuController
         }
         WindowManager wm = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        CharSequence[] entries = pref.getEntries();
+        CharSequence[] entries = pref.getEntries();//从配置项中得到所有滤镜条目
 
         Resources r = mActivity.getResources();
         int height = (int) (r.getDimension(R.dimen.filter_mode_height) + 2
@@ -1316,7 +1316,7 @@ public class PhotoMenu extends MenuController
         int gridRes = 0;
         boolean portrait = (rotation == 0) || (rotation == 180);
         int size = height;
-        if (portrait) {
+        if (portrait) {//根据横竖屏加载对应布局
             gridRes = R.layout.vertical_grid;
             size = width;
         } else {
@@ -1327,7 +1327,7 @@ public class PhotoMenu extends MenuController
         mPreviewMenuStatus = PREVIEW_MENU_ON;
         mSceneStatus = MODE_FILTER;
 
-        int[] thumbnails = pref.getThumbnailIds();
+        int[] thumbnails = pref.getThumbnailIds();//得到对应滤镜的表示图片
 
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
@@ -1335,7 +1335,7 @@ public class PhotoMenu extends MenuController
                 gridRes, null, false);
 
         mUI.dismissSceneModeMenu();
-        LinearLayout previewMenuLayout = new LinearLayout(mActivity);
+        LinearLayout previewMenuLayout = new LinearLayout(mActivity);//动态布局
         mUI.setPreviewMenuLayout(previewMenuLayout);
         ViewGroup.LayoutParams params = null;
         if (portrait) {
@@ -1369,13 +1369,13 @@ public class PhotoMenu extends MenuController
                     } else if (event.getAction() == MotionEvent.ACTION_UP) {
                         if (System.currentTimeMillis() - startTime < CLICK_THRESHOLD) {
                             pref.setValueIndex(j);
-                            changeFilterModeControlIcon(pref.getValue());
-                            onSettingChanged(pref);
+                            changeFilterModeControlIcon(pref.getValue());//根据点击的滤镜选项图片更新三圈图标
+                            onSettingChanged(pref);//重新刷新一遍设置项，并使对应的滤镜预览生效。最后都是回调PhotoModule（其它xxxModule类同）里面的onSharedPreferenceChanged
                             for (View v1 : views) {
                                 v1.setBackground(null);
                             }
                             ImageView image = (ImageView) v.findViewById(R.id.image);
-                            image.setBackgroundColor(0xff33b5e5);
+                            image.setBackgroundColor(0xff33b5e5);//给点击的那个图片着色
                         }
                     }
                     return true;
@@ -1394,7 +1394,7 @@ public class PhotoMenu extends MenuController
         mPreviewMenu = basic;
     }
 
-    private void changeFilterModeControlIcon(String value) {
+    private void changeFilterModeControlIcon(String value) {//滤镜按钮（三个圈）数值更新，为none就灰显，不为none就蓝显
         if(!value.equals("")) {
             if(value.equalsIgnoreCase("none")) {
                 value = "Off";
@@ -1531,10 +1531,10 @@ public class PhotoMenu extends MenuController
     }
 
     public void setPreference(String key, String value) {
-        ListPreference pref = mPreferenceGroup.findPreference(key);
+        ListPreference pref = mPreferenceGroup.findPreference(key);//找到设置的对象
         if (pref != null && !value.equals(pref.getValue())) {
             pref.setValue(value);
-            reloadPreferences();
+            reloadPreferences();//重新加载
         }
     }
 
@@ -1662,7 +1662,7 @@ public class PhotoMenu extends MenuController
             mActivity.requestLocationPermission();
         }
 
-        super.onSettingChanged(pref);
+        super.onSettingChanged(pref);//setting更新后调用这个在MenuController回调PhotoModule（其它xxxModule类同）里面的onSharedPreferenceChanged
         if (same(pref, SettingsManager.KEY_CAMERA2, "enable")) {//如果支持双camera模式就使用CAPTURE_MODULE_INDEX否则使用PHOTO_MODULE_INDEX
             mActivity.onModuleSelected(ModuleSwitcher.CAPTURE_MODULE_INDEX);
         } else if (notSame(pref, SettingsManager.KEY_CAMERA2, "enable")) {

@@ -119,6 +119,8 @@ public class PhotoUI implements PieListener,
     private PhotoMenu mMenu;
     private ModuleSwitcher mSwitcher;
     private HorizontalselectedView mSwitchMain;///:iphone style 
+    
+    private int navigation_bar_height = 144;//48dp///:M[new style preview start]
     private CameraControls mCameraControls;
     private MenuHelp mMenuHelp;
     private AlertDialog mLocationDialog;
@@ -273,13 +275,13 @@ public class PhotoUI implements PieListener,
             }
         });
 
-        mRenderOverlay = (RenderOverlay) mRootView.findViewById(R.id.render_overlay);
+        mRenderOverlay = (RenderOverlay) mRootView.findViewById(R.id.render_overlay);//浮动视图载体，如对焦框
         mFlashOverlay = mRootView.findViewById(R.id.flash_overlay);
         mShutterButton = (ShutterButton) mRootView.findViewById(R.id.shutter_button);
-        mSwitcher = (ModuleSwitcher) mRootView.findViewById(R.id.camera_switcher);
+        mSwitcher = (ModuleSwitcher) mRootView.findViewById(R.id.camera_switcher);//模式选择，拍照，录像，全景，业务逻辑（popmenu，模式点击事件处理包括点击）都在自定义控件ModuleSwitcher实现
         mSwitcher.setCurrentIndex(ModuleSwitcher.PHOTO_MODULE_INDEX);
         mSwitcher.setSwitchListener(mActivity);
-        mSwitcher.setOnClickListener(new OnClickListener() {
+        mSwitcher.setOnClickListener(new OnClickListener() {//点击模式选择按钮后弹出pop选择框
             @Override
             public void onClick(View v) {
                 if (mController.getCameraState() == PhotoController.LONGSHOT) {
@@ -318,7 +320,7 @@ public class PhotoUI implements PieListener,
         mActivity.getWindowManager().getDefaultDisplay().getSize(size);
         mScreenRatio = CameraUtil.determineRatio(size.x, size.y);
         calculateMargins(size);
-        mCameraControls.setMargins(mTopMargin, mBottomMargin);
+        mCameraControls.setMargins(mTopMargin, mBottomMargin);//
         showFirstTimeHelp();
     }
 
@@ -326,8 +328,10 @@ public class PhotoUI implements PieListener,
         int l = size.x > size.y ? size.x : size.y;
         int tm = mActivity.getResources().getDimensionPixelSize(R.dimen.preview_top_margin);
         int bm = mActivity.getResources().getDimensionPixelSize(R.dimen.preview_bottom_margin);
-        mTopMargin = l / 4 * tm / (tm + bm);
+        ///:M[new style preview start]--@--{
+        mTopMargin = 0;//l / 4 * tm / (tm + bm);
         mBottomMargin = l / 4 - mTopMargin;
+        ///:M--@--}
     }
 
     public void setDownFactor(int factor) {
@@ -354,7 +358,7 @@ public class PhotoUI implements PieListener,
         });
     }
 
-    public void setAspectRatio(float ratio) {
+    public void setAspectRatio(float ratio) {//设置preview预览比率，修改比率可以考虑修改这里
         if (ratio <= 0.0) throw new IllegalArgumentException();
 
         if (mOrientationResize &&
@@ -369,7 +373,7 @@ public class PhotoUI implements PieListener,
             mAspectRatio = ratio;
         }
         mCameraControls.setPreviewRatio(mAspectRatio, false);
-        layoutPreview(ratio);
+        layoutPreview(ratio);//动态布局preview size
     }
 
     public void layoutPreview(float ratio) {
@@ -475,7 +479,7 @@ public class PhotoUI implements PieListener,
         if (mFaceView != null) {
             mFaceView.setLayoutParams(lp);
         }
-        mIsLayoutInitializedAlready = true;
+        mIsLayoutInitializedAlready = true;//至此告知预览layout已经初始化完毕
     }
 
     public void setSurfaceTextureSizeChangedListener(SurfaceTextureSizeChangedListener listener) {
@@ -517,30 +521,30 @@ public class PhotoUI implements PieListener,
 
     public void onCameraOpened(PreferenceGroup prefGroup, ComboPreferences prefs,
             Camera.Parameters params, OnPreferenceChangedListener listener, MakeupLevelListener makeupListener) {
-        if (mPieRenderer == null) {
+        if (mPieRenderer == null) {//对焦框初始化
             mPieRenderer = new PieRenderer(mActivity);
-            mPieRenderer.setPieListener(this);
-            mRenderOverlay.addRenderer(mPieRenderer);
+            mPieRenderer.setPieListener(this);//对焦监听设置
+            mRenderOverlay.addRenderer(mPieRenderer);//将实例加到对应悬浮root视图上
         }
 
-        if (mMenu == null) {
+        if (mMenu == null) {//初始化menu
             mMenu = new PhotoMenu(mActivity, this, makeupListener);
-            mMenu.setListener(listener);
+            mMenu.setListener(listener);//设置menu监听，监听实现在MenuController
         }
-        mMenu.initialize(prefGroup);
+        mMenu.initialize(prefGroup);//实例化menu后初始化所有的menu选项
         mMenuInitialized = true;
 
-        if (mZoomRenderer == null) {
+        if (mZoomRenderer == null) {//双指在屏幕上缩放镜头拉近拉远时的扩大缩小圈圈
             mZoomRenderer = new ZoomRenderer(mActivity);
-            mRenderOverlay.addRenderer(mZoomRenderer);
+            mRenderOverlay.addRenderer(mZoomRenderer);//与对焦框一样将实例加到对应悬浮root视图上
         }
 
         if (mGestures == null) {
             // this will handle gesture disambiguation and dispatching
-            mGestures = new PreviewGestures(mActivity, this, mZoomRenderer, mPieRenderer);
+            mGestures = new PreviewGestures(mActivity, this, mZoomRenderer, mPieRenderer);//对焦框与视野拉近拉远圈加到手势控制区
             mRenderOverlay.setGestures(mGestures);
         }
-        mGestures.setPhotoMenu(mMenu);
+        mGestures.setPhotoMenu(mMenu);//将menu添加到预览手势触摸点击事件控制器
 
         mGestures.setZoomEnabled(params.isZoomSupported());
         mGestures.setRenderOverlay(mRenderOverlay);
@@ -856,7 +860,7 @@ public class PhotoUI implements PieListener,
         mMakeupMenuLayout = layout;
     }
 
-    public void showPopup(ListView popup, int level, boolean animate) {
+    public void showPopup(ListView popup, int level, boolean animate) {//初始化menulayout并确认其显示位置
         FrameLayout.LayoutParams params;
         hideUI();
 
@@ -873,6 +877,35 @@ public class PhotoUI implements PieListener,
                             CameraActivity.SETTING_LIST_WIDTH_1, LayoutParams.WRAP_CONTENT,
                             Gravity.RIGHT | Gravity.TOP);
                 }
+
+                ///：M[new style preview start]--start--@{//这个修改保证无论在哪个角度都menu起点都置顶置底
+
+                int screenHeight = (mOrientation == 0 || mOrientation == 180)
+					   ? mRootView.getHeight()- navigation_bar_height : mRootView.getWidth();
+		int height = ((com.android.camera.ui.ListMenu) popup).getMeasuredHeight();
+		int yBase = 0;
+		int xBase = 0;
+		if(mRootView.getLayoutDirection() != View.LAYOUT_DIRECTION_RTL){
+			if(mOrientation == 90)
+				xBase = navigation_bar_height;
+			if(mOrientation == 180){
+				yBase = navigation_bar_height;
+			}
+		}
+		if(mRootView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL && mOrientation == 270){
+			xBase = navigation_bar_height;
+		}
+
+		int y = Math.max(0, yBase);
+		if (yBase + height > screenHeight)
+				y = Math.max(0, screenHeight - height);
+		if (mRootView.getLayoutDirection() != View.LAYOUT_DIRECTION_RTL) {
+			params.setMargins(xBase, yBase, 0, 0);
+		} else {
+			params.setMargins(0, yBase, xBase, 0);
+		}
+				
+                ///:M--end--@}
                 mMenuLayout.setLayoutParams(params);
                 ((ViewGroup) mRootView).addView(mMenuLayout);
             }
@@ -893,19 +926,40 @@ public class PhotoUI implements PieListener,
                         CameraActivity.SETTING_LIST_WIDTH_2, LayoutParams.WRAP_CONTENT,
                         Gravity.RIGHT | Gravity.TOP);
             }
-            int screenHeight = (mOrientation == 0 || mOrientation == 180)
-                ? mRootView.getHeight() : mRootView.getWidth();
+	   ///：M[new style preview start]--start--@{//这个修改保证无论在哪个角度都menu起点都置顶置底
+           /* int screenHeight = (mOrientation == 0 || mOrientation == 180)
+                ? mRootView.getHeight() : mRootView.getWidth();*/
+             int screenHeight = (mOrientation == 0 || mOrientation == 180)
+                ? mRootView.getHeight()-navigation_bar_height : mRootView.getWidth();
+           ///:M--end--@}
             int height = ((ListSubMenu) popup).getPreCalculatedHeight();
             int yBase = ((ListSubMenu) popup).getYBase();
+	   ///：M[new style preview start]--start--@{//这个修改保证无论在哪个角度都menu起点都置顶置底
+            int x_off= 0;
+
+	    if(mRootView.getLayoutDirection() != View.LAYOUT_DIRECTION_RTL && mOrientation == 90){
+			x_off = navigation_bar_height;
+	    }
+	    if(mRootView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL && mOrientation == 270){
+				x_off = navigation_bar_height;
+	    }
+            ///:M--end--@}
             int y = Math.max(0, yBase);
             if (yBase + height > screenHeight)
                 y = Math.max(0, screenHeight - height);
+             ///：M[new style preview start]--start--@{//这个修改保证无论在哪个角度都menu起点都置顶置底
             if (mRootView.getLayoutDirection() != View.LAYOUT_DIRECTION_RTL) {
+                params.setMargins(CameraActivity.SETTING_LIST_WIDTH_1+x_off, y, 0, 0);
+            } else {
+                params.setMargins(0, y, CameraActivity.SETTING_LIST_WIDTH_1+x_off, 0);
+            }
+            /*if (mRootView.getLayoutDirection() != View.LAYOUT_DIRECTION_RTL) {
                 params.setMargins(CameraActivity.SETTING_LIST_WIDTH_1, y, 0, 0);
             } else {
                 params.setMargins(0, y, CameraActivity.SETTING_LIST_WIDTH_1, 0);
-            }
-
+            }*/
+            
+            ///:M--end--@}
             mSubMenuLayout.setLayoutParams(params);
 
             mSubMenuLayout.addView(popup);
@@ -1206,7 +1260,7 @@ public class PhotoUI implements PieListener,
         hideUIWhileCountDown();
     }
 
-    public void startSelfieFlash() {
+    public void startSelfieFlash() {//前摄没有闪光灯时的白屏补光功能
         if(mSelfieView == null)
             mSelfieView = (SelfieFlashView) (mRootView.findViewById(R.id.selfie_flash));
         mSelfieView.bringToFront();
@@ -1379,8 +1433,56 @@ public class PhotoUI implements PieListener,
         mCameraControls.setOrientation(orientation, animation);
         if (mMenuHelp != null)
             mMenuHelp.setOrientation(orientation, animation);
-        if (mMenuLayout != null)
-            mMenuLayout.setOrientation(orientation, animation);
+         ///:M[new style preview start]///确保menu置顶置底
+        /*if (mMenuLayout != null)
+            mMenuLayout.setOrientation(orientation, animation);*/
+         if (mMenuLayout != null){
+	mMenuLayout.setOrientation(orientation, animation);
+	FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)mMenuLayout.getLayoutParams();
+	if(mRootView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL){
+		if(orientation == 0 || orientation == 180 || orientation == 270){
+			lp.leftMargin = 0;
+			lp.rightMargin = 0;
+			lp.bottomMargin = navigation_bar_height;
+			lp.topMargin = 0;
+		}else{
+			lp.leftMargin = 0;
+			lp.topMargin = 0;
+			lp.rightMargin = 0;
+			if(lp.bottomMargin < navigation_bar_height){
+				lp.bottomMargin = navigation_bar_height;
+			}
+		}
+	}else{
+		if(orientation == 90){
+			lp.leftMargin = 0;
+			lp.rightMargin = 0;
+			lp.bottomMargin = navigation_bar_height;
+			lp.topMargin = 0;
+		}else if(orientation == 180){
+			lp.leftMargin = 0;
+			lp.topMargin = 0;
+			lp.bottomMargin = navigation_bar_height;
+			lp.rightMargin = 0;
+		}else if(orientation == 270){
+			lp.leftMargin = 0;
+			lp.topMargin = 0;
+			lp.rightMargin = 0;
+			lp.bottomMargin = 0;
+		}else{
+			lp.leftMargin = 0;
+			lp.topMargin = 0;
+			lp.rightMargin = 0;
+			if(lp.bottomMargin < navigation_bar_height){
+				lp.bottomMargin = navigation_bar_height;
+			}
+		}
+	}
+    	mMenuLayout.setLayoutParams(lp);
+    	mMenuLayout.requestLayout();
+
+	}
+        ///M：--end--@}
         if (mSubMenuLayout != null)
             mSubMenuLayout.setOrientation(orientation, animation);
         if (mPreviewMenuLayout != null) {

@@ -381,12 +381,13 @@ public class CameraControls extends RotatableLayout {
     public void onLayout(boolean changed, int l, int t, int r, int b) {
         int orientation = getResources().getConfiguration().orientation;
         int size = getResources().getDimensionPixelSize(R.dimen.camera_controls_size);
+	int off_size = getResources().getDimensionPixelSize(R.dimen.pie_view_size);///:m[new style preview start]
         int rotation = getUnifiedRotation();
         adjustBackground();
         // As l,t,r,b are positions relative to parents, we need to convert them
         // to child's coordinates
         r = r - l;
-        b = b - t;
+        b = b - t-off_size;///:m[new style preview start]
         l = 0;
         t = 0;
         for (int i = 0; i < getChildCount(); i++) {
@@ -426,7 +427,7 @@ public class CameraControls extends RotatableLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mTopMargin != 0) {
+       // if (mTopMargin != 0) {///:m[new style preview start]
             int rotation = getUnifiedRotation();
             int w = canvas.getWidth(), h = canvas.getHeight()-50;
             switch (rotation) {
@@ -447,7 +448,7 @@ public class CameraControls extends RotatableLayout {
                     canvas.drawRect(0, h - mBottomMargin, w, h, mPaint);
                     break;
             }
-        }
+       // }///:m[new style preview start]
     }
 
     private void setLocation(int w, int h) {

@@ -285,7 +285,7 @@ public class CameraSettings {
     public static final HashMap<String, Integer>
             VIDEO_QUALITY_TABLE = new HashMap<String, Integer>();
 
-    static {
+    static {//video编码方式
         //video encoders
         VIDEO_ENCODER_TABLE.put(MediaRecorder.VideoEncoder.H263, "h263");
         VIDEO_ENCODER_TABLE.put(MediaRecorder.VideoEncoder.H264, "h264");

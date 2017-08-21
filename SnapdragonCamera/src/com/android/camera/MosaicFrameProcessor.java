@@ -194,7 +194,9 @@ public class MosaicFrameProcessor {
     }
 
     public void calculateTranslationRate() {
-        float[] frameData = mMosaicer.setSourceImageFromGPU();
+        float[] frameData = mMosaicer.setSourceImageFromGPU();//从GUP得到数据
+        
+        Log.v(TAG, "calculateTranslationRate frameData.length="+frameData.length);
         int ret_code = (int) frameData[MOSAIC_RET_CODE_INDEX];
         mTotalFrameCount  = (int) frameData[FRAME_COUNT_INDEX];
         float translationCurrX = frameData[X_COORD_INDEX];

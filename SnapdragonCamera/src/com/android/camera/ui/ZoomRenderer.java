@@ -25,7 +25,7 @@ import android.graphics.Rect;
 import android.view.ScaleGestureDetector;
 
 import org.codeaurora.snapcam.R;
-
+//双指在屏幕上缩放时的扩大缩小圈圈
 public class ZoomRenderer extends OverlayRenderer
         implements ScaleGestureDetector.OnScaleGestureListener {
 

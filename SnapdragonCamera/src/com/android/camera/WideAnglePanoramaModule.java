@@ -426,7 +426,7 @@ public class WideAnglePanoramaModule
     }
 
     private boolean findBestPreviewSize(List<Size> supportedSizes, boolean need4To3,
-            boolean needSmaller) {
+            boolean needSmaller) {//找到最好的预览尺寸，即比DEFAULT_CAPTURE_PIXELS小且比例合适即可
         int pixelsDiff = DEFAULT_CAPTURE_PIXELS;
         boolean hasFound = false;
         for (Size size : supportedSizes) {
@@ -453,7 +453,7 @@ public class WideAnglePanoramaModule
 
     private void setupCaptureParams(Parameters parameters) {
         List<Size> supportedSizes = parameters.getSupportedPreviewSizes();
-        if (!findBestPreviewSize(supportedSizes, true, true)) {
+        if (!findBestPreviewSize(supportedSizes, true, true)) {//设置最佳预览尺寸
             Log.w(TAG, "No 4:3 ratio preview size supported.");
             if (!findBestPreviewSize(supportedSizes, false, true)) {
                 Log.w(TAG, "Can't find a supported preview size smaller than 960x720.");
@@ -468,7 +468,7 @@ public class WideAnglePanoramaModule
         int last = frameRates.size() - 1;
         int minFps = (frameRates.get(last))[Parameters.PREVIEW_FPS_MIN_INDEX];
         int maxFps = (frameRates.get(last))[Parameters.PREVIEW_FPS_MAX_INDEX];
-        parameters.setPreviewFpsRange(minFps, maxFps);
+        parameters.setPreviewFpsRange(minFps, maxFps);//设置最大最小贞率
         Log.d(TAG, "preview fps: " + minFps + ", " + maxFps);
 
         List<String> supportedFocusModes = parameters.getSupportedFocusModes();
@@ -503,6 +503,7 @@ public class WideAnglePanoramaModule
      * Will stop the camera preview first.
      */
     private void configMosaicPreview() {
+            Log.w(TAG, "configMosaicPreview"+"mPreviewUIWidth= "+mPreviewUIWidth+"mPreviewUIHeight ="+mPreviewUIHeight);
         if (mPreviewUIWidth == 0 || mPreviewUIHeight == 0
                 || mUI.getSurfaceTexture() == null) {
             return;
@@ -556,7 +557,7 @@ public class WideAnglePanoramaModule
                 @Override
                 public void run() {
                     if (!mPaused){
-                        mMainHandler.removeMessages(MSG_RESET_TO_PREVIEW);
+                        mMainHandler.removeMessages(MSG_RESET_TO_PREVIEW);//先要重设置preview
                         startCapture();
                     }
                 }
@@ -573,6 +574,7 @@ public class WideAnglePanoramaModule
     }
 
     public void startCapture() {
+            Log.w(TAG, "startCapture");
         // Reset values so we can do this again.
         mCancelComputation = false;
         mTimeTaken = System.currentTimeMillis();
@@ -588,6 +590,7 @@ public class WideAnglePanoramaModule
             @Override
             public void onProgress(boolean isFinished, float panningRateX, float panningRateY,
                     float progressX, float progressY) {
+        Log.d(TAG, "startCapture: " + "isFinished="+isFinished+"panningRateX = "+panningRateX+"panningRateY = "+panningRateY+"progressX = "+progressX+"progressY = "+progressY);
                 float accumulatedHorizontalAngle = progressX * mHorizontalViewAngle;
                 float accumulatedVerticalAngle = progressY * mVerticalViewAngle;
                 boolean isRotated = !(mDeviceOrientationAtCapture == mDeviceOrientation);
@@ -595,7 +598,7 @@ public class WideAnglePanoramaModule
                         || (Math.abs(accumulatedHorizontalAngle) >= DEFAULT_SWEEP_ANGLE)
                         || (Math.abs(accumulatedVerticalAngle) >= DEFAULT_SWEEP_ANGLE)
                         || isRotated) {
-                    stopCapture(false);
+                    stopCapture(false);//满足停止条件
                 } else {
                     float panningRateXInDegree = panningRateX * mHorizontalViewAngle;
                     float panningRateYInDegree = panningRateY * mVerticalViewAngle;
@@ -605,11 +608,12 @@ public class WideAnglePanoramaModule
                     }
                     mUI.updateCaptureProgress(panningRateXInDegree, panningRateYInDegree,
                             accumulatedHorizontalAngle, accumulatedVerticalAngle,
-                            PANNING_SPEED_THRESHOLD);
+                            PANNING_SPEED_THRESHOLD);//没停止就继续
                 }
             }
         });
 
+            Log.w(TAG, "startCapture resetCaptureProgress");
         mUI.resetCaptureProgress();
         // TODO: calculate the indicator width according to different devices to reflect the actual
         // angle of view of the camera device.
@@ -646,7 +650,7 @@ public class WideAnglePanoramaModule
             runBackgroundThread(new Thread() {
                 @Override
                 public void run() {
-                    MosaicJpeg jpeg = generateFinalMosaic(false);
+                    MosaicJpeg jpeg = generateFinalMosaic(false);//得到最后的拍摄数据，最后只是通过Mosaic.java调用底层方法
 
                     if (jpeg != null && jpeg.isValid) {
                         Bitmap bitmap = null;
@@ -664,7 +668,7 @@ public class WideAnglePanoramaModule
     }
 
     @Override
-    public void onShutterButtonClick() {
+    public void onShutterButtonClick() {//点击拍照按钮
         // If mCameraTexture == null then GL setup is not finished yet.
         // No buttons can be pressed.
         if (mPaused || mThreadRunning || mCameraTexture == null) {
@@ -684,7 +688,7 @@ public class WideAnglePanoramaModule
                 	mSoundPlayer.play(SoundClips.START_VIDEO_RECORDING);
                 }
                 //modify by hys [ICE15-2019] 2017/07/11 end
-                startCapture();
+                startCapture();//开始拍照，之后都是由onPreviewUILayoutChange触发
                 break;
             case CAPTURE_STATE_MOSAIC:
                 //modify by hys [ICE15-2019] 2017/07/11 start
@@ -941,6 +945,7 @@ public class WideAnglePanoramaModule
 
     @Override
     public void onPauseAfterSuper() {
+            Log.w(TAG, "onPauseAfterSuper");
         mOrientationEventListener.disable();
         if (mCameraDevice == null) {
             // Camera open failed. Nothing should be done here.
@@ -948,6 +953,7 @@ public class WideAnglePanoramaModule
         }
         // Stop the capturing first.
         if (mCaptureState == CAPTURE_STATE_MOSAIC) {
+            Log.w(TAG, "mCaptureState == CAPTURE_STATE_MOSAIC");
             stopCapture(true);
             reset();
         }

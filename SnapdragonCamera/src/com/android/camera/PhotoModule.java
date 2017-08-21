@@ -685,7 +685,7 @@ public class PhotoModule
                     Log.w(TAG, "startPreview: holder for preview are not ready.");
                     return;
                 }
-                mCameraDevice.setPreviewDisplay(sh);
+                mCameraDevice.setPreviewDisplay(sh);//sh就是预览的数据
                 //add by zhangpengfei for ICE2-431 modify preview is stretched start
                 resizeForPreviewAspectRatio();
                 //add by zhangpengfei for ICE2-431 modify preview is stretched end
@@ -700,7 +700,7 @@ public class PhotoModule
         }
         try {
             if (mOpenCameraThread != null) {
-                mOpenCameraThread.join();
+                mOpenCameraThread.join();//如果mOpenCameraThread还在进行则需要等到线程mOpenCameraThread完成才会继续执行stopPreview下面部分
                 mOpenCameraThread = null;
             }
         } catch (InterruptedException ex) {
@@ -743,7 +743,7 @@ public class PhotoModule
         // from onPause
         try {
             if (mOpenCameraThread != null) {
-                mOpenCameraThread.join();
+                mOpenCameraThread.join();//如果mOpenCameraThread还在进行则需要等到线程mOpenCameraThread完成才会继续执行下面部分
                 mOpenCameraThread = null;
             }
         } catch (InterruptedException ex) {
@@ -2141,7 +2141,7 @@ public class PhotoModule
     }
 
     @Override
-    public void onOrientationChanged(int orientation) {
+    public void onOrientationChanged(int orientation) {//方向改变监听
         // We keep the last known orientation. So if the user first orient
         // the camera then point the camera to floor or sky, we still have
         // the correct orientation.
@@ -2450,16 +2450,20 @@ public class PhotoModule
 
     private void initiateSnap()//自拍模式，和正常拍照
     {
+            Log.d(TAG, "initiateSnap");
         if(mPreferences.getString(CameraSettings.KEY_SELFIE_FLASH,
                 mActivity.getString(R.string.pref_selfie_flash_default))
                 .equalsIgnoreCase("on") &&
-                mCameraId == CameraHolder.instance().getFrontCameraId()) {
+                mCameraId == CameraHolder.instance().getFrontCameraId()) {//前摄没有闪光灯时的白屏补光功能是否打开
+            
+            Log.d(TAG, "startSelfieFlash");
             mUI.startSelfieFlash();
             if(selfieThread == null) {
                 selfieThread = new SelfieThread();
                 selfieThread.start();
             }
         } else {
+            Log.d(TAG, "mFocusManager.doSnap()");
             mFocusManager.doSnap();//doSnap拍照按钮都没有动画效果，最后回调到上面的 capture()
         }
     }
@@ -3038,7 +3042,7 @@ public class PhotoModule
             }
 
             // Let UI set its expected aspect ratio
-            mCameraDevice.setPreviewDisplay(sh);
+            mCameraDevice.setPreviewDisplay(sh);//sh就是预览的数据
         }
 
         if (!mCameraPreviewParamsReady) {
@@ -3072,13 +3076,13 @@ public class PhotoModule
 
         setDisplayOrientation();
 
-        if (!mSnapshotOnIdle && !mInstantCaptureSnapShot) {
+        if (!mSnapshotOnIdle && !mInstantCaptureSnapShot) {//这个何时走到？
             // If the focus mode is continuous autofocus, call cancelAutoFocus to
             // resume it because it may have been paused by autoFocus call.
             if (CameraUtil.FOCUS_MODE_CONTINUOUS_PICTURE.equals(mFocusManager.getFocusMode())) {
                 mCameraDevice.cancelAutoFocus();
             }
-        } else {
+        } else {//这个何时走到？
             Log.v(TAG, "Trigger snapshot from start preview.");
             mHandler.post(mDoSnapRunnable);
         }
@@ -3099,9 +3103,9 @@ public class PhotoModule
     private void updateCameraParametersInitialize() {
         // Reset preview frame rate to the maximum because it may be lowered by
         // video camera application.
-        int[] fpsRange = CameraUtil.getPhotoPreviewFpsRange(mParameters);
+        int[] fpsRange = CameraUtil.getPhotoPreviewFpsRange(mParameters);//获取预览针率
         if (fpsRange != null && fpsRange.length > 0) {
-            mParameters.setPreviewFpsRange(
+            mParameters.setPreviewFpsRange(//设置最大最小针率
                     fpsRange[Parameters.PREVIEW_FPS_MIN_INDEX],
                     fpsRange[Parameters.PREVIEW_FPS_MAX_INDEX]);
         }
@@ -3157,7 +3161,7 @@ public class PhotoModule
         return mRestartPreview;
     }
 
-    private boolean isInstantCaptureEnabled() {
+    private boolean isInstantCaptureEnabled() {//是否启动快速曝光拍照？
         String instantCapture = mPreferences.getString(
                 CameraSettings.KEY_INSTANT_CAPTURE,
                 mActivity.getString(R.string.pref_camera_instant_capture_default));
@@ -3325,7 +3329,7 @@ public class PhotoModule
                 mParameters.setISOValue(iso);
             }
         }
-        // Set color effect parameter.
+        // Set color effect parameter.//设置滤镜
         String colorEffect = mPreferences.getString(
                 CameraSettings.KEY_COLOR_EFFECT,
                 mActivity.getString(R.string.pref_camera_coloreffect_default));
@@ -3732,7 +3736,7 @@ public class PhotoModule
                 }
             } else {
                 mParameters.set(CameraSettings.KEY_QC_INSTANT_CAPTURE,
-                    mActivity.getString(R.string.pref_camera_instant_capture_value_disable));
+                    mActivity.getString(R.string.pref_camera_instant_capture_value_disable));//高通的快速曝光拍照
                 instantCapture = mActivity.getString(
                         R.string.pref_camera_instant_capture_value_disable);
                 mActivity.runOnUiThread(new Runnable() {
@@ -3883,7 +3887,7 @@ public class PhotoModule
     }
 
     /** This can run on a background thread, so don't do UI updates here.*/
-    private boolean updateCameraParametersPreference() {
+    private boolean updateCameraParametersPreference() {//重新更新parameter参数，预览效果根据参数改变而改变，比如点击了其他滤镜，更换了图片尺寸等等
         setAutoExposureLockIfSupported();
         setAutoWhiteBalanceLockIfSupported();
         setFocusAreasIfSupported();
@@ -4211,18 +4215,18 @@ public class PhotoModule
         if (mCameraDevice == null) {
             return;
         }
-        synchronized (mCameraDevice) {
+        synchronized (mCameraDevice) {//切换前后摄时下面if全部刷一遍更新parameter
             boolean doModeSwitch = false;
 
             if ((updateSet & UPDATE_PARAM_INITIALIZE) != 0) {
-                updateCameraParametersInitialize();
+                updateCameraParametersInitialize();//貌似和录像有关
             }
 
             if ((updateSet & UPDATE_PARAM_ZOOM) != 0) {
                 updateCameraParametersZoom();
             }
 
-            if ((updateSet & UPDATE_PARAM_PREFERENCE) != 0) {
+            if ((updateSet & UPDATE_PARAM_PREFERENCE) != 0) {//重刷parameter参数//比如设置滤镜时，
                 doModeSwitch = updateCameraParametersPreference();
             }
 
@@ -4245,7 +4249,7 @@ public class PhotoModule
             mUpdateSet = 0;
             return;
         } else if (isCameraIdle()) {
-            setCameraParameters(mUpdateSet);
+            setCameraParameters(mUpdateSet);//更新parameter
              if(mRestartPreview && mCameraState != PREVIEW_STOPPED) {
                 Log.v(TAG, "Restarting Preview...");
                 stopPreview();
@@ -4755,7 +4759,7 @@ public class PhotoModule
     }
 
     @Override
-    public void onSharedPreferenceChanged(ListPreference pref) {
+    public void onSharedPreferenceChanged(ListPreference pref) {//设置对应属性后都会被监听回调到这里更新各个属性后调用 onSharedPreferenceChanged() 重新preview
         // ignore the events after "onPause()"
         if (mPaused) return;
 
@@ -4826,7 +4830,7 @@ public class PhotoModule
                     Toast.LENGTH_LONG).show();
         }
         //call generic onSharedPreferenceChanged
-        onSharedPreferenceChanged();
+        onSharedPreferenceChanged();//根据设置项更新后重新preview
     }
 
     @Override
@@ -4849,13 +4853,13 @@ public class PhotoModule
          * executed till now, then schedule these functionality for
          * later by posting a message to the handler */
         if (mUI.mMenuInitialized) {
-            setCameraParametersWhenIdle(UPDATE_PARAM_PREFERENCE);
+            setCameraParametersWhenIdle(UPDATE_PARAM_PREFERENCE);//更新parameter参数，最后是framework调用底层接口的事了
             mUI.updateOnScreenIndicators(mParameters, mPreferenceGroup,
                 mPreferences);
         } else {
             mHandler.sendEmptyMessage(SET_PHOTO_UI_PARAMS);
         }
-        resizeForPreviewAspectRatio();
+        resizeForPreviewAspectRatio();//根据设置项更新后重新preview包括屏幕比率
     }
 
     @Override

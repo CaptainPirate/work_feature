@@ -2870,13 +2870,14 @@ public class VideoModule implements CameraModule,
         pref.setValue("" + cameraId);
     }
 
-    private void switchCamera() {
+    private void switchCamera() {//[2137]
         if (mPaused)  {
             return;
         }
 
         Log.d(TAG, "Start to switch camera.");
         mUI.applySurfaceChange(VideoUI.SURFACE_STATUS.HIDE);
+        mUI.hideUI();//[2137]
         mCameraId = mPendingSwitchCameraId;
         mPendingSwitchCameraId = -1;
         setCameraId(mCameraId);

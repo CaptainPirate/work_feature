@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+//对焦框控制
 public class PieController {
 
     private static String TAG = "CAM_piecontrol";

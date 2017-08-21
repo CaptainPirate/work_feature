@@ -163,9 +163,9 @@ public class ModuleSwitcher extends RotateImageView
         mTouchEnabled = enable;
     }
 
-    public void showPopup() {
-        showSwitcher();
-        mListener.onShowSwitcherPopup();
+    public void showPopup() {//弹出模式（拍照，录像，全景）选择pop框
+        showSwitcher();//初始化与弹出
+        mListener.onShowSwitcherPopup();//实现在XXXModule里转调用XXXUI实现
     }
 
     private void onModuleSelected(int ix) {
@@ -174,8 +174,8 @@ public class ModuleSwitcher extends RotateImageView
             UsageStatistics.onEvent("CameraModeSwitch", null, null);
             UsageStatistics.setPendingTransitionCause(
                     UsageStatistics.TRANSITION_MENU_TAP);
-            setCurrentIndex(ix);
-            mListener.onModuleSelected(mModuleIds[ix]);
+            setCurrentIndex(ix);//将原来的图标重新设置为选择的模式图标
+            mListener.onModuleSelected(mModuleIds[ix]);//最后真正的切换在CameraActivity实现
         }
     }
 
@@ -211,7 +211,7 @@ public class ModuleSwitcher extends RotateImageView
                 @Override
                 public void onClick(View v) {
                     if (showsPopup()) {
-                        onModuleSelected(index);//选择模式拍照录像或全景，最后是在CameraActivity里面实现模式切换
+                        onModuleSelected(index);//选择模式拍照，录像或全景，最后是在CameraActivity里面实现业务分发到XXXModule来处理//为每张图片设置点击事件
                     }
                 }
             });

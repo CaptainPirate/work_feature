@@ -192,13 +192,13 @@ public class PreviewGestures
             if (mCaptureUI.isMenuBeingShown()) {
                 if (!mCaptureUI.isMenuBeingAnimated()) {
                     waitUntilNextDown = true;
-                    mCaptureUI.removeAllSettingMenu(true);
+                    mCaptureUI.removeAllSettingMenu(true);//点击了屏幕设置menu需要清除
                 }
                 return true;
             }
             if (mCaptureUI.isPreviewMenuBeingShown()) {
                 waitUntilNextDown = true;
-                mCaptureUI.removeSceneAndFilterMenu(true);
+                mCaptureUI.removeSceneAndFilterMenu(true);//点击了屏幕模式选择menu需要清除
                 return true;
             }
         }

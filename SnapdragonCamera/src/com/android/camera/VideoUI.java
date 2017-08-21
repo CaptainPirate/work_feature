@@ -191,7 +191,7 @@ public class VideoUI implements PieRenderer.PieListener,
     public synchronized void applySurfaceChange(SURFACE_STATUS status) {
         if(status == SURFACE_STATUS.HIDE) {
             mSurfaceView.setVisibility(View.GONE);
-            hideUI();///:[ICE15-2137]
+            //hideUI();///:[ICE15-2137]
             return;
         }
         mSurfaceView.setVisibility(View.VISIBLE);

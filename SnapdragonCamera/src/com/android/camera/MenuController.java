@@ -65,7 +65,7 @@ public class MenuController {
         mOverrides.clear();
     }
 
-    public void onSettingChanged(ListPreference pref) {
+    public void onSettingChanged(ListPreference pref) {//当对应设置与menu等改变就会调用这个回调XXXModule监听
         if (mListener != null) {
             mListener.onSharedPreferenceChanged(pref);
         }

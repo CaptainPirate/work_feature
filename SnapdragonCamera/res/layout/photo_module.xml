@@ -111,9 +111,7 @@
         android:clickable="true"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="95dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginBottom="144dp"
         android:visibility="gone"
         android:background="#44000000" >
         <ImageView
@@ -229,5 +227,6 @@
         android:id="@+id/id_tsmakeup_level_layout_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="48dp"
         android:visibility="gone" />
 </merge>

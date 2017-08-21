@@ -44,7 +44,7 @@ import org.codeaurora.snapcam.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/**对焦框
  * An overlay renderer that is used to display focus state and progress state.
  */
 public class PieRenderer extends OverlayRenderer
@@ -203,7 +203,7 @@ public class PieRenderer extends OverlayRenderer
         mSubPaint.setColor(Color.argb(200, 250, 230, 128));
         mFocusPaint = new Paint();
         mFocusPaint.setAntiAlias(true);
-        mFocusPaint.setColor(Color.WHITE);
+        mFocusPaint.setColor(Color.WHITE);//对焦框整体颜色
         mFocusPaint.setStyle(Paint.Style.STROKE);
         mSuccessColor = Color.GREEN;
         mFailColor = Color.RED;
@@ -959,7 +959,7 @@ public class PieRenderer extends OverlayRenderer
         if (mState == STATE_PIE) return;
         int color = mFocusPaint.getColor();
         if (mState == STATE_FINISHING) {
-            mFocusPaint.setColor(mFocused ? mSuccessColor : mFailColor);
+            mFocusPaint.setColor(mFocused ? mSuccessColor : mFailColor);//对焦框中间部分颜色设置，对焦成功为绿色不成功为红色
         }
         mFocusPaint.setStrokeWidth(mInnerStroke);
         drawLine(canvas, mDialAngle, mFocusPaint);
