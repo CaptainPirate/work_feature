@@ -63,12 +63,12 @@ public class FocusOverlayManager {
     private static final int RESET_TOUCH_FOCUS_DELAY = 3000;
 
     private int mState = STATE_IDLE;
-    public static final int STATE_IDLE = 0; // Focus is not active.
-    public static final int STATE_FOCUSING = 1; // Focus is in progress.
-    // Focus is in progress and the camera should take a picture after focus finishes.
-    public static final int STATE_FOCUSING_SNAP_ON_FINISH = 2;
-    public static final int STATE_SUCCESS = 3; // Focus finishes and succeeds.
-    public static final int STATE_FAIL = 4; // Focus finishes and fails.
+    public static final int STATE_IDLE = 0; // Focus is not active.//对焦不活跃
+    public static final int STATE_FOCUSING = 1; // Focus is in progress.//对焦正在进行
+    // Focus is in progress and the camera should take a picture after focus finishes.//点击拍照后，如果对焦结束了才拍照
+    public static final int STATE_FOCUSING_SNAP_ON_FINISH = 2;//对焦中拍照结束中
+    public static final int STATE_SUCCESS = 3; // Focus finishes and succeeds.//对焦成功了
+    public static final int STATE_FAIL = 4; // Focus finishes and fails.//对焦失败了
 
     private boolean mInitialized;
     private boolean mFocusAreaSupported;
@@ -272,8 +272,8 @@ public class FocusOverlayManager {
         }
     }
 
-    public void onAutoFocus(boolean focused, boolean shutterButtonPressed) {
-        if (mState == STATE_FOCUSING_SNAP_ON_FINISH) {
+    public void onAutoFocus(boolean focused, boolean shutterButtonPressed) {//PhotoModule里的AutoFocusCallback回调调用这里得到目前对焦状态后改变对焦框ui
+        if (mState == STATE_FOCUSING_SNAP_ON_FINISH) {//如果对焦正结束（对焦结束无论对焦成功还是失败都会触发拍照），下面就是判断对焦成功还是失败了
             // Take the picture no matter focus succeeds or fails. No need
             // to play the AF sound if we're about to play the shutter
             // sound.

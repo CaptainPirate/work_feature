@@ -354,7 +354,7 @@ public class CameraActivity extends Activity
             //modified by muxudong for ICE2-1086 end
             //add by lichao for ICE2-956,2017-5-23 end
             Log.d(TAG, "SDcard status changed, update storage space");
-            updateStorageSpaceAndHint();
+            updateStorageSpaceAndHint();//监听剩余空间并给出对应提醒
         }
     };
 
@@ -434,7 +434,7 @@ public class CameraActivity extends Activity
                 public void onDataFullScreenChange(int dataID, boolean full) {
                     boolean isCameraID = isCameraPreview(dataID);
                     if (full && isCameraID && CameraActivity.this.hasWindowFocus()){
-                        updateStorageSpaceAndHint();
+                        updateStorageSpaceAndHint();//监听剩余空间并给出对应提醒
                     }
                     if (!isCameraID) {
                         if (!full) {
@@ -505,7 +505,7 @@ public class CameraActivity extends Activity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                updateStorageSpaceAndHint();
+                                updateStorageSpaceAndHint();//监听剩余空间并给出对应提醒
                             }
                         });
                     }
@@ -1518,7 +1518,7 @@ public class CameraActivity extends Activity
         } else if (MediaStore.ACTION_IMAGE_CAPTURE.equals(getIntent().getAction())
                 || MediaStore.ACTION_IMAGE_CAPTURE_SECURE.equals(getIntent().getAction())) {
             moduleIndex = ModuleSwitcher.PHOTO_MODULE_INDEX;
-        } else {
+        } else {//如果非指向性(指定打开photo还是video)打开camera,比如点击桌面图标，就从preference里面存储的最后关闭camera时的缓存的module
             // If the activity has not been started using an explicit intent,
             // read the module index from the last time the user changed modes
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -1930,7 +1930,7 @@ public class CameraActivity extends Activity
 
     protected long updateStorageSpace() {
         synchronized (mStorageSpaceLock) {
-            mStorageSpaceBytes = Storage.getAvailableSpace();
+            mStorageSpaceBytes = Storage.getAvailableSpace();//获取当前可用存储空间，如果是SDCARD就获取SDCARD的空间，如果是手机存储空间就获取手机的可用空间
             if (Storage.switchSavePath()) {
                 mStorageSpaceBytes = Storage.getAvailableSpace();
                 mMainHandler.sendEmptyMessage(SWITCH_SAVE_PATH);
@@ -1946,15 +1946,15 @@ public class CameraActivity extends Activity
     }
 
     protected void updateStorageSpaceAndHint() {
-        updateStorageSpace();
-        updateStorageHint(mStorageSpaceBytes);
+        updateStorageSpace();//更新存储空间看是否需要切换空间
+        updateStorageHint(mStorageSpaceBytes);//根据现有的空间提供对应的提示
     }
 
     protected interface OnStorageUpdateDoneListener {
         void onStorageUpdateDone(long storageSpace);
     }
 
-    protected void updateStorageSpaceAndHint(final OnStorageUpdateDoneListener callback) {
+    protected void updateStorageSpaceAndHint(final OnStorageUpdateDoneListener callback) {//这个监听方式貌似被抛弃了
         (new AsyncTask<Void, Void, Long>() {
             @Override
             protected Long doInBackground(Void ... arg) {

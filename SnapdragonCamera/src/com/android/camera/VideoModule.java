@@ -802,24 +802,24 @@ public class VideoModule implements CameraModule,
     }
 
     @Override
-    public void onShutterButtonClick() {
+    public void onShutterButtonClick() {//录像按钮点击
         if (mPaused || mUI.collapseCameraControls() ||
                 mSwitchingCamera) return;
 
         boolean stop = mMediaRecorderRecording;
 
-        if (isPreviewReady() == false)
+        if (isPreviewReady() == false)//预览准备好
             return;
 
-        if (isRecorderReady() == false)
+        if (isRecorderReady() == false)//录像前准备好了
             return;
 
         mUI.enableShutter(false);
 
-        if (stop) {
+        if (stop) {//如果正在录像再点击就停止录像
             onStopVideoRecording();
         } else {
-            if (!startVideoRecording()) {
+            if (!startVideoRecording()) {//开始录像，如果失败就走下面，重新显示menu
                 // Show ui when start recording failed.
                 mUI.showUIafterRecording();
             }
@@ -1861,18 +1861,18 @@ public class VideoModule implements CameraModule,
         return mMediaRecorderRecording;
     }
 
-    private boolean startVideoRecording() {
+    private boolean startVideoRecording() {//开始录像
         Log.v(TAG, "startVideoRecording");
         mStartRecPending = true;
-        mUI.cancelAnimations();
+        mUI.cancelAnimations();//停止所有动画，包括录像时点击屏幕快拍闪白一下的动画
         mUI.setSwipingEnabled(false);
-        mUI.hideUIwhileRecording();
+        mUI.hideUIwhileRecording();//隐藏ui
         // When recording request is sent before starting preview, onPreviewFrame()
         // callback doesn't happen so removing preview cover here, instead.
         if (mUI.isPreviewCoverVisible()) {
             mUI.hidePreviewCover();
         }
-        mActivity.updateStorageSpaceAndHint();
+        mActivity.updateStorageSpaceAndHint();//判断是否需要切换sdcard为存储空间，如果当前手机存储已经不够了（超过了临界值）
         if (mActivity.getStorageSpaceBytes() <= Storage.LOW_STORAGE_THRESHOLD_BYTES) {
             Log.v(TAG, "Storage issue, ignore the start request");
             mStartRecPending = false;
@@ -2932,12 +2932,12 @@ public class VideoModule implements CameraModule,
         }
     }
 
-    void showVideoSnapshotUI(boolean enabled) {
+    void showVideoSnapshotUI(boolean enabled) {//显示录像时点击屏幕快拍闪白一下的动画，并闪一下抓拍到的图片
         if (mParameters == null) return;
         if (CameraUtil.isVideoSnapshotSupported(mParameters) && !mIsVideoCaptureIntent) {
             if (enabled) {
-                mUI.animateFlash();
-                mUI.animateCapture();
+                mUI.animateFlash();//闪白一下
+                mUI.animateCapture();//原本是闪一下抓拍的图片，但是这里图片直接置空了，所以不会闪一下快拍得到的图片
             } else {
                 mUI.showPreviewBorder(enabled);
             }

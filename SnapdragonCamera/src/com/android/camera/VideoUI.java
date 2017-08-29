@@ -140,11 +140,11 @@ public class VideoUI implements PieRenderer.PieListener,
         SURFACE_VIEW;
     }
 
-    public void showPreviewCover() {
+    public void showPreviewCover() {//如果预览数据还没有preview上来就把黑布显示出来覆盖着显示的时间很短
         mPreviewCover.setVisibility(View.VISIBLE);
     }
 
-    public void hidePreviewCover() {
+    public void hidePreviewCover() {//预览已经出来了就把这个黑布给隐藏
         if (mPreviewCover != null && mPreviewCover.getVisibility() != View.GONE) {
             mPreviewCover.setVisibility(View.GONE);
         }
@@ -526,14 +526,14 @@ public class VideoUI implements PieRenderer.PieListener,
     /**
      * Starts a flash animation
      */
-    public void animateFlash() {
-        mAnimationManager.startFlashAnimation(mFlashOverlay);
+    public void animateFlash() {//录像过程中点击屏幕快拍屏幕闪白一下的动画
+       mAnimationManager.startFlashAnimation(mFlashOverlay);//开启一个闪烁动画
     }
 
     /**
      * Starts a capture animation
      */
-    public void animateCapture() {
+    public void animateCapture() {//这里图片直接置空了，所以不会闪一下快拍得到的图片
         Bitmap bitmap = null;
         animateCapture(bitmap);
     }

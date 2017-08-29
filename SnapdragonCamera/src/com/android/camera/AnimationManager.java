@@ -170,7 +170,7 @@ public class AnimationManager {
     /**
      * Cancels on-going flash animation and capture animation, if any.
      */
-    public void cancelAnimations() {
+    public void cancelAnimations() {//停止所有的动画
         // End the previous animation if the previous one is still running
         if (mFlashAnim != null && mFlashAnim.isRunning()) {
             mFlashAnim.cancel();

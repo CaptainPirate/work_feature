@@ -267,7 +267,7 @@ class AndroidCameraManagerImpl implements CameraManager {
 
                     case SET_PREVIEW_DISPLAY_ASYNC:
                         try {
-                            mCamera.setPreviewDisplay((SurfaceHolder) msg.obj);
+                            mCamera.setPreviewDisplay((SurfaceHolder) msg.obj);//通过底层往surfaceHolder里面填充数据
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

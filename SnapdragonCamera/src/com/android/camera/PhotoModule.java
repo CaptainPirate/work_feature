@@ -579,14 +579,14 @@ public class PhotoModule
             mPreferences = new ComboPreferences(mActivity);
         }
 
-        CameraSettings.upgradeGlobalPreferences(mPreferences.getGlobal(), activity);
-        mCameraId = getPreferredCameraId(mPreferences);
+        CameraSettings.upgradeGlobalPreferences(mPreferences.getGlobal(), activity);////从缓存xml里取全局设置项并更新
+        mCameraId = getPreferredCameraId(mPreferences);//从缓存xml里取cameraid
 
         mContentResolver = mActivity.getContentResolver();
 
         // Surface texture is from camera screen nail and startPreview needs it.
         // This must be done before startPreview.
-        mIsImageCaptureIntent = isImageCaptureIntent();
+        mIsImageCaptureIntent = isImageCaptureIntent();//预览前需要这个判断
 
         mPreferences.setLocalId(mActivity, mCameraId);// 通过上面得到的cameraid设置选择当前camera的参数
         CameraSettings.upgradeLocalPreferences(mPreferences.getLocal());//通过得到的当前camera参数，更新当前camera设置
@@ -685,7 +685,7 @@ public class PhotoModule
                     Log.w(TAG, "startPreview: holder for preview are not ready.");
                     return;
                 }
-                mCameraDevice.setPreviewDisplay(sh);//sh就是预览的数据
+                mCameraDevice.setPreviewDisplay(sh);//sh就是预览的数据,实现在AndroidCameraManagerImpl.java最后通过jni调用调用native往surfaceHolder里面填充数据
                 //add by zhangpengfei for ICE2-431 modify preview is stretched start
                 resizeForPreviewAspectRatio();
                 //add by zhangpengfei for ICE2-431 modify preview is stretched end
@@ -1359,7 +1359,7 @@ public class PhotoModule
                 mBurstSnapNum = mParameters.getInt("num-snaps-per-shutter");
             }
             Log.v(TAG, "JpegPictureCallback: Received = " + mReceivedSnapNum +
-                      "Burst count = " + mBurstSnapNum);//mReceivedSnapNum表示目前为止连拍的数量
+                      "Burst count = " + mBurstSnapNum);//mReceivedSnapNum表示目前为止连拍的数量，在HDR模式也会拍两张
             // If postview callback has arrived, the captured image is displayed
             // in postview callback. If not, the captured image is displayed in
             // raw picture callback.
@@ -1447,7 +1447,7 @@ public class PhotoModule
                     }
                     String pictureFormat = mParameters.get(KEY_PICTURE_FORMAT);
                     if (pictureFormat != null && !pictureFormat.equalsIgnoreCase(PIXEL_FORMAT_JPEG)) {
-                        // overwrite width and height if raw picture
+                        // overwrite width and height if raw picture//如果是未经处理的图片数据就重新设置长宽
                         String pair = mParameters.get(KEY_QC_RAW_PICUTRE_SIZE);
                         if (pair != null) {
                             int pos = pair.indexOf('x');
@@ -1590,13 +1590,15 @@ public class PhotoModule
             //don't reset the camera state while capture is in progress
             //otherwise, it might result in another takepicture
             switch (mCameraState) {
-                case PhotoController.LONGSHOT:
+                case PhotoController.LONGSHOT://如果正在连拍或者正在拍照直接返回
                 case SNAPSHOT_IN_PROGRESS:
                     break;
                 default:
-                    setCameraState(IDLE);
+                    setCameraState(IDLE);//否则设置为空闲状态
                     break;
             }
+            //这里调用FocusOverlayManager里的onAutoFocus根据对焦状态改变对焦框
+            //需要注意的是（对焦结束后）无论对焦成功还是失败都会拍照，但是如果在对焦过程中是不会拍照的
             mFocusManager.onAutoFocus(focused, mUI.isShutterPressed());
         }
     }
@@ -1686,11 +1688,11 @@ public class PhotoModule
         }
         mCaptureStartTime = System.currentTimeMillis();
         mPostViewPictureCallbackTime = 0;
-        mJpegImageData = null;
+        mJpegImageData = null;//用来存放图片数据信息
 
         final boolean animateBefore = (mSceneMode == CameraUtil.SCENE_MODE_HDR);
         if(mHiston) {
-            if (mSnapshotMode != CameraInfo.CAMERA_SUPPORT_MODE_ZSL) {
+            if (mSnapshotMode != CameraInfo.CAMERA_SUPPORT_MODE_ZSL) {//如果不是零延迟模式，就关闭histogram预览
                 mHiston = false;
                 mCameraDevice.setHistogramMode(null);
             }
@@ -1703,7 +1705,7 @@ public class PhotoModule
         }
 
         if (animateBefore) {
-            animateAfterShutter();//拍照完后的动画效果
+            animateAfterShutter();//闪白屏貌似删掉也没有影响
         }
 
         if (mCameraState == LONGSHOT) {
@@ -1718,11 +1720,11 @@ public class PhotoModule
 
         synchronized (mCameraDevice) {
             mParameters.setRotation(mJpegRotation);
-            CameraUtil.setGpsParameters(mParameters, loc);
+            CameraUtil.setGpsParameters(mParameters, loc);//设置gps位置参数
 
             if (mRefocus) {
                 mParameters.set(CameraSettings.KEY_QC_LEGACY_BURST,
-                        CameraSettings.KEY_QC_RE_FOCUS_COUNT);
+                        CameraSettings.KEY_QC_RE_FOCUS_COUNT);//重对焦模式，即拍照后点击缩略图可以重新选择对焦区域
             } else {
                 mParameters.remove(CameraSettings.KEY_QC_LEGACY_BURST);
             }
@@ -1732,8 +1734,8 @@ public class PhotoModule
             // side effects could be triggered w.r.t.
             // flash.
             mFocusManager.setAeAwbLock(false);
-            setAutoExposureLockIfSupported();
-            setAutoWhiteBalanceLockIfSupported();
+            setAutoExposureLockIfSupported();//parameter 设置曝光在FocusOverlayManager得到参数
+            setAutoWhiteBalanceLockIfSupported();//parameter 设置白平衡
 
             mCameraDevice.setParameters(mParameters);
             mParameters = mCameraDevice.getParameters();
@@ -1782,7 +1784,7 @@ public class PhotoModule
             mCameraDevice.takePicture(mHandler,
                     new ShutterCallback(!animateBefore),
                     mRawPictureCallback, mPostViewPictureCallback,
-                    new JpegPictureCallback(loc));
+                    new JpegPictureCallback(loc));//参数与预备条件都设置好后触发真正的底层截获图片数据并设置拍照按钮回调，图片数据回调
             setCameraState(SNAPSHOT_IN_PROGRESS);
         }
 
@@ -1810,7 +1812,7 @@ public class PhotoModule
         return null;
     }
 
-    private int getPreferredCameraId(ComboPreferences preferences) {
+    private int getPreferredCameraId(ComboPreferences preferences) {//从缓存xml里取cameraid
         int intentCameraId = CameraUtil.getCameraFacingIntentExtras(mActivity);
         if (intentCameraId != -1) {
             // Testing purpose. Launch a specific camera through the intent
@@ -2213,19 +2215,19 @@ public class PhotoModule
     }
 
     @Override
-    public void onCaptureDone() {
+    public void onCaptureDone() {//拍照完成，获取到数据
         if (mPaused) {
             return;
         }
 
-        //modified by muxudong for ICE2-1194 start
+        //modified  for ICE2-1194 start
         byte[] data;
         if (isImageCaptureIntent() && !mUI.getCaptureHandled() && mLastCaptureData != null) {
             data = mLastCaptureData;
         } else {
             data = mJpegImageData;
         }
-        //modified by muxudong for ICE2-1194 end
+        //modified by for ICE2-1194 end
 
         ///:[ICE15-2689]--@--{
         if(data==null){
@@ -2240,7 +2242,7 @@ public class PhotoModule
             if (mSaveUri != null) {
                 OutputStream outputStream = null;
                 try {
-                    outputStream = mContentResolver.openOutputStream(mSaveUri);
+                    outputStream = mContentResolver.openOutputStream(mSaveUri);//将图片数据写入mSaveUri
                     outputStream.write(data);
                     outputStream.close();
 
@@ -2252,10 +2254,10 @@ public class PhotoModule
                     CameraUtil.closeSilently(outputStream);
                 }
             } else {
-                ExifInterface exif = Exif.getExif(data);
+                ExifInterface exif = Exif.getExif(data);//得到图片头信息
                 int orientation = Exif.getOrientation(exif);
                 Bitmap bitmap = CameraUtil.makeBitmap(data, 50 * 1024);
-                bitmap = CameraUtil.rotate(bitmap, orientation);
+                bitmap = CameraUtil.rotate(bitmap, orientation);//根据头信息将图片旋转（最后我们在gallery看到的图片旋转了多少度就是这里做的）
                 mActivity.setResultEx(Activity.RESULT_OK,
                         new Intent("inline-data").putExtra("data", bitmap));
                 mActivity.finish();
@@ -2369,7 +2371,7 @@ public class PhotoModule
                 || (null == mFocusManager)) return;
 
         // Do not take the picture if there is not enough storage.
-        if (mActivity.getStorageSpaceBytes() <= Storage.LOW_STORAGE_THRESHOLD_BYTES) {
+        if (mActivity.getStorageSpaceBytes() <= Storage.LOW_STORAGE_THRESHOLD_BYTES) {//如果没有足够的空间就不拍照
             Log.i(TAG, "Not enough space or storage not ready. remaining="
                     + mActivity.getStorageSpaceBytes());
             return;
@@ -2382,7 +2384,7 @@ public class PhotoModule
         }
 
          //Need to disable focus for ZSL mode
-        if (mFocusManager != null) {
+        if (mFocusManager != null) {//零延迟拍照
             if (mSnapshotMode == CameraInfo.CAMERA_SUPPORT_MODE_ZSL) {
                 mFocusManager.setZslEnable(true);
             } else {
@@ -2397,19 +2399,19 @@ public class PhotoModule
         // focus callback arrives.
         if ((((mFocusManager != null) && mFocusManager.isFocusingSnapOnFinish())
                 || mCameraState == SNAPSHOT_IN_PROGRESS)
-                && !mIsImageCaptureIntent) {
+                && !mIsImageCaptureIntent) {//如果对焦完成，或正在拍照，或非图片拍照intent就直接return，估计是防止重复点击拍照冲突
             mSnapshotOnIdle = true;
             return;
         }
 
         String timer = mPreferences.getString(
                 CameraSettings.KEY_TIMER,
-                mActivity.getString(R.string.pref_camera_timer_default));
+                mActivity.getString(R.string.pref_camera_timer_default));//倒计时拍照时间
         boolean playSound = mPreferences.getString(CameraSettings.KEY_TIMER_SOUND_EFFECTS,
                 mActivity.getString(R.string.pref_camera_timer_sound_default))
                 .equals(mActivity.getString(R.string.setting_on_value));
 
-        int seconds = Integer.parseInt(timer);
+        int seconds = Integer.parseInt(timer);//倒计时拍照时间换算
         // When shutter button is pressed, check whether the previous countdown is
         // finished. If not, cancel the previous countdown and start a new one.
         if (mUI.isCountingDown()) {//在倒计时模式的时候用到
@@ -2418,7 +2420,7 @@ public class PhotoModule
         if (seconds > 0) {//开启了倒计时
            
             String zsl = mPreferences.getString(CameraSettings.KEY_ZSL,
-                    mActivity.getString(R.string.pref_camera_zsl_default));
+                    mActivity.getString(R.string.pref_camera_zsl_default));//是否开启了零延迟拍照
             ///M:ray add for 1590 front beauty mode {@
             if (true) {//com.huaqin.common.featureoption.FeatureOption.HQ_1590_AMAZON_CAMERA_REMOSAIC_ALGORITHM 
                 if (mCameraId == CameraHolder.instance().getFrontCameraId()){
@@ -2457,14 +2459,14 @@ public class PhotoModule
                 mCameraId == CameraHolder.instance().getFrontCameraId()) {//前摄没有闪光灯时的白屏补光功能是否打开
             
             Log.d(TAG, "startSelfieFlash");
-            mUI.startSelfieFlash();
+            mUI.startSelfieFlash();//开启白屏补光
             if(selfieThread == null) {
                 selfieThread = new SelfieThread();
                 selfieThread.start();
             }
         } else {
             Log.d(TAG, "mFocusManager.doSnap()");
-            mFocusManager.doSnap();//doSnap拍照按钮都没有动画效果，最后回调到上面的 capture()
+            mFocusManager.doSnap();//最后回调到上面的 capture()
         }
     }
 
@@ -2831,7 +2833,7 @@ public class PhotoModule
     @Override
     public void autoFocus() {
         mFocusStartTime = System.currentTimeMillis();
-        mCameraDevice.autoFocus(mHandler, mAutoFocusCallback);
+        mCameraDevice.autoFocus(mHandler, mAutoFocusCallback);//添加对焦监听回调
         setCameraState(FOCUSING);
     }
 
@@ -3042,7 +3044,7 @@ public class PhotoModule
             }
 
             // Let UI set its expected aspect ratio
-            mCameraDevice.setPreviewDisplay(sh);//sh就是预览的数据
+            mCameraDevice.setPreviewDisplay(sh);//sh就是预览的数据，实现在AndroidCameraManagerImpl.java最后通过jni调用调用native往surfaceHolder里面填充数据
         }
 
         if (!mCameraPreviewParamsReady) {
@@ -3694,9 +3696,9 @@ public class PhotoModule
                     mParameters.getSupportedFocusModes()) && !mFocusManager.isTouch()) {
                 mFocusManager.overrideFocusMode(Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 mParameters.setFocusMode(Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-            } else if (mFocusManager.isTouch()) {
+            } else if (mFocusManager.isTouch()) {//点击预览屏幕
                 mFocusManager.overrideFocusMode(null);
-                mParameters.setFocusMode(mFocusManager.getFocusMode());
+                mParameters.setFocusMode(mFocusManager.getFocusMode());//设置对焦模式
             } else {
                 // If not supported use the current mode
                 mFocusManager.overrideFocusMode(mFocusManager.getFocusMode());
@@ -3753,7 +3755,7 @@ public class PhotoModule
         mParameters.set(CameraSettings.KEY_QC_INSTANT_CAPTURE, instantCapture);
 
 
-        //Set Histogram
+        //Set Histogram//与零延迟拍照相关
         String histogram = mPreferences.getString(
                 CameraSettings.KEY_HISTOGRAM,
                 mActivity.getString(R.string.pref_camera_histogram_default));

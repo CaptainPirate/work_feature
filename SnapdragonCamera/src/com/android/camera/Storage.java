@@ -271,7 +271,7 @@ public class Storage {
         }
     }
 
-    public static boolean switchSavePath() {
+    public static boolean switchSavePath() {//判断是否需要切换sdcard为存储空间，如果当前手机存储已经不够了（超过了临界值）
         if (!isSaveSDCard()
                 && getInternalStorageAvailableSpace() <= LOW_STORAGE_THRESHOLD_BYTES
                 && getSDCardAvailableSpace() > LOW_STORAGE_THRESHOLD_BYTES) {
