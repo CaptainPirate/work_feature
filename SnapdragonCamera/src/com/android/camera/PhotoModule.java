@@ -3299,6 +3299,8 @@ public class PhotoModule
         }
 
         // Set Selectable Zone Af parameter.
+        //可选区域自动对焦模式，点测光，中心加权，帧平均了解是啥。比如测光：是利用了物体对光线的反射原理。
+        //得知是否过曝了， 过曝了需要调低曝光量（调小光圈， 或调快门）反之就是欠曝， 需要增加曝光量。
         String selectableZoneAf = mPreferences.getString(
             CameraSettings.KEY_SELECTABLE_ZONE_AF,
             mActivity.getString(R.string.pref_camera_selectablezoneaf_default));
@@ -3307,13 +3309,13 @@ public class PhotoModule
             mParameters.setSelectableZoneAf(selectableZoneAf);
         }
 
-        // Set wavelet denoise mode
+        // Set wavelet denoise mode//小波去燥点，
         if (mParameters.getSupportedDenoiseModes() != null) {
             String Denoise = mPreferences.getString( CameraSettings.KEY_DENOISE,
                              mActivity.getString(R.string.pref_camera_denoise_default));
             mParameters.setDenoise(Denoise);
         }
-        // Set Redeye Reduction
+        // Set Redeye Reduction//红眼相关
         String redeyeReduction = mPreferences.getString(
                 CameraSettings.KEY_REDEYE_REDUCTION,
                 mActivity.getString(R.string.pref_camera_redeyereduction_default));
@@ -3340,7 +3342,7 @@ public class PhotoModule
             mParameters.setColorEffect(colorEffect);
         }
 
-        //Set Saturation
+        //Set Saturation  //饱和度设置
         String saturationStr = mPreferences.getString(
                 CameraSettings.KEY_SATURATION,
                 mActivity.getString(R.string.pref_camera_saturation_default));
@@ -3349,7 +3351,7 @@ public class PhotoModule
         if((0 <= saturation) && (saturation <= mParameters.getMaxSaturation())){
             mParameters.setSaturation(saturation);
         }
-        // Set contrast parameter.
+        // Set contrast parameter.//色彩对比度
         String contrastStr = mPreferences.getString(
                 CameraSettings.KEY_CONTRAST,
                 mActivity.getString(R.string.pref_camera_contrast_default));
@@ -3358,7 +3360,7 @@ public class PhotoModule
         if((0 <= contrast) && (contrast <= mParameters.getMaxContrast())){
             mParameters.setContrast(contrast);
         }
-        // Set sharpness parameter
+        // Set sharpness parameter//色彩锐利
         String sharpnessStr = mPreferences.getString(
                 CameraSettings.KEY_SHARPNESS,
                 mActivity.getString(R.string.pref_camera_sharpness_default));
@@ -3377,7 +3379,7 @@ public class PhotoModule
                 CameraSettings.getSupportedFaceRecognitionModes(mParameters))) {
             mParameters.set(CameraSettings.KEY_QC_FACE_RECOGNITION, faceRC);
         }
-        // Set AE Bracketing
+        // Set AE Bracketing//与HDR模式相关一种曝光模式，自动适应光线变化模式
         String aeBracketing = mPreferences.getString(
                 CameraSettings.KEY_AE_BRACKET_HDR,
                 mActivity.getString(R.string.pref_camera_ae_bracket_hdr_default));
@@ -3387,7 +3389,7 @@ public class PhotoModule
             mParameters.set(CameraSettings.KEY_QC_AE_BRACKETING, aeBracketing);
         }
 
-        // Set CDS
+        // Set CDS  Correlated Double Sampling，// 相关双联取样电路，懂照相机的就知道，就是那个CCD感光元件相关，上层也基本不用管保持默认设置
         String cds = mPreferences.getString(
                 CameraSettings.KEY_CDS_MODE,
                 mActivity.getString(R.string.pref_camera_cds_default));
@@ -3399,7 +3401,7 @@ public class PhotoModule
             mParameters.set(CameraSettings.KEY_QC_CDS_MODE, cds);
         }
 
-        // Set TNR
+        // Set TNR  //一种均衡时间降噪算法，上层也不用管，看到它略过就行
         String tnr = mPreferences.getString(
                 CameraSettings.KEY_TNR_MODE,
                 mActivity.getString(R.string.pref_camera_tnr_default));
@@ -3434,7 +3436,7 @@ public class PhotoModule
             mParameters.set(CameraSettings.KEY_QC_TNR_MODE, tnr);
         }
 
-        // Set hdr mode
+        // Set hdr mode  // 高动态范围成像技术，原理就是使用不同曝光值拍摄多张图片再通过算法合成，保证在过明过暗环境细节清楚
         String hdrMode = mPreferences.getString(
                 CameraSettings.KEY_HDR_MODE,
                 mActivity.getString(R.string.pref_camera_hdr_mode_default));
@@ -3616,7 +3618,7 @@ public class PhotoModule
             }
         }
 
-        // Set auto exposure parameter.
+        // Set auto exposure parameter.//自动曝光
         String autoExposure = mPreferences.getString(
                 CameraSettings.KEY_AUTOEXPOSURE,
                 mActivity.getString(R.string.pref_camera_autoexposure_default));
@@ -3722,7 +3724,7 @@ public class PhotoModule
             }
         }
 
-        // Set Instant Capture
+        // Set Instant Capture//瞬间捕捉快照
         String instantCapture = mPreferences.getString(
                 CameraSettings.KEY_INSTANT_CAPTURE,
                 mActivity.getString(R.string.pref_camera_instant_capture_default));
@@ -3791,7 +3793,7 @@ public class PhotoModule
         String aeBracket = mParameters.get(CameraSettings.KEY_QC_AE_BRACKETING);
         if (!aeBracket.equalsIgnoreCase("off")) {
             String fMode = Parameters.FLASH_MODE_OFF;
-            mParameters.setFlashMode(fMode);
+            mParameters.setFlashMode(fMode);//关闭闪光灯
         }
 
         if(!mFocusManager.getFocusMode().equals(Parameters.FOCUS_MODE_CONTINUOUS_PICTURE) &&
@@ -4094,7 +4096,7 @@ public class PhotoModule
 
         if (Parameters.SCENE_MODE_AUTO.equals(mSceneMode)) {
             // Set flash mode.
-            String flashMode;
+            String flashMode;//闪光灯设置
             if (mSavedFlashMode == null) {
                 flashMode = mPreferences.getString(
                     CameraSettings.KEY_FLASH_MODE,

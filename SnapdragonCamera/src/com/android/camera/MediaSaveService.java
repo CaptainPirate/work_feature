@@ -328,19 +328,22 @@ public class MediaSaveService extends Service {
             values.put(Video.Media.DURATION, duration);
             Uri uri = null;
             try {
-                Uri videoTable = Uri.parse(VIDEO_BASE_URI);
-                uri = resolver.insert(videoTable, values);
+                Uri videoTable = Uri.parse(VIDEO_BASE_URI);//得到video的表
+                uri = resolver.insert(videoTable, values);//将video的对象插入表中，注意这里并没有数据，代表数据的是路径插入数据库表
 
                 // Rename the video file to the final name. This avoids other
                 // apps reading incomplete data.  We need to do it after we are
                 // certain that the previous insert to MediaProvider is completed.
                 String finalName = values.getAsString(
-                        Video.Media.DATA);
+                        Video.Media.DATA);//得到最终的文件所在地
+                
+                Log.v(TAG, "hss path: " + finalName);
+                Log.v(TAG, "hss finalName: " + finalName);
+                //将video数据写入最终的目录文件,不过从打印的log来看两个路径是一样的，察看代码逻辑也是一样的取值。这个目的貌似是防止其他应用读取到不完整的视频数据
                 if (new File(path).renameTo(new File(finalName))) {
                     path = finalName;
                 }
-
-                resolver.update(uri, values, null, null);
+                resolver.update(uri, values, null, null);//更新数据库
             } catch (Exception e) {
                 // We failed to insert into the database. This can happen if
                 // the SD card is unmounted.

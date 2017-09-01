@@ -225,14 +225,16 @@ public class VideoModule implements CameraModule,
             android.os.SystemProperties.getInt("persist.camcorder.eis.maxfps", 30);
 
     private final MediaSaveService.OnMediaSavedListener mOnVideoSavedListener =
-            new MediaSaveService.OnMediaSavedListener() {
+            new MediaSaveService.OnMediaSavedListener() {//录像保存监听 {//在stopVideoRecording()之后调用saveVideo()里调用
                 @Override
                 public void onMediaSaved(Uri uri) {
                     if (uri != null) {
-                        mCurrentVideoUri = uri;
+       		    Log.i(TAG,"hss2 mCurrentVideoUri = " + mCurrentVideoUri);
+       		    Log.i(TAG,"hss2 uri = " + uri);
+                        mCurrentVideoUri = uri;//这个uri才是视频文件的所在地，下面保存到table里的path只是映射路径，用于文件显示
                         mCurrentVideoUriFromMediaSaved = true;
-                        onVideoSaved();
-                        mActivity.notifyNewMedia(uri);
+                        onVideoSaved();//录像完后获取视频缩略图并显示，显示其它隐藏的ui释放资源
+                        mActivity.notifyNewMedia(uri);//CameraActivity中最后调用CameraDataAdapter里的对应方法(例如addNewVideo)更新media数据库
                     }
                 }
             };
@@ -439,7 +441,7 @@ public class VideoModule implements CameraModule,
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             //modified by muxudong for ICE2-1787 start
-            if (action.equals(Intent.ACTION_MEDIA_EJECT)) {
+            if (action.equals(Intent.ACTION_MEDIA_EJECT)) {//空间满了或达到阔值了
                 //add by wangshenxing [ICE2-1730] 2017/06/15 start
                 if (Storage.isSaveSDCard() && mMediaRecorderRecording) {
 		     onStopVideoRecording();
@@ -448,7 +450,7 @@ public class VideoModule implements CameraModule,
                         mActivity.getResources().getString(R.string.sdcard_unmounted),
                         Toast.LENGTH_SHORT).show();
                 //add by wangshenxing [ICE2-1730] 2017/06/15 end
-            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {//灭屏了
                 stopVideoRecording();
                 RotateTextToast.makeText(mActivity,
                         mActivity.getResources().getString(R.string.video_recording_stopped),
@@ -539,7 +541,7 @@ public class VideoModule implements CameraModule,
             // ignore
         }
 
-        readVideoPreferences();
+        readVideoPreferences();//从配置文件读取默认配置项
         mUI.setPrefChangedListener(this);
 
         mQuickCapture = mActivity.getIntent().getBooleanExtra(EXTRA_QUICK_CAPTURE, false);
@@ -578,10 +580,10 @@ public class VideoModule implements CameraModule,
     @Override
     public void onSingleTapUp(View view, int x, int y) {
         if (mMediaRecorderPausing) return;
-        takeASnapshot();
+        takeASnapshot();//录像时点击屏幕快照
     }
 
-    private void takeASnapshot() {
+    private void takeASnapshot() {//录像时，快照功能
         // Only take snapshots if video snapshot is supported by device
         if (CameraUtil.isVideoSnapshotSupported(mParameters) && !mIsVideoCaptureIntent) {
             if (!mMediaRecorderRecording || mPaused || mSnapshotInProgress) {
@@ -601,7 +603,7 @@ public class VideoModule implements CameraModule,
 
             Log.v(TAG, "Video snapshot start");
             mCameraDevice.takePicture(mHandler,
-                    null, null, null, new JpegPictureCallback(loc));
+                    null, null, null, new JpegPictureCallback(loc));//通过 JpegPictureCallback 保存快照图片
             showVideoSnapshotUI(true);
             mSnapshotInProgress = true;
             UsageStatistics.onEvent(UsageStatistics.COMPONENT_CAMERA,
@@ -702,9 +704,9 @@ public class VideoModule implements CameraModule,
     private void startPlayVideoActivity() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //add by gehuaishu for ICE2-974 start
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加临时uri权限
         //add by gehuaishu for ICE2-974 end
-        intent.setDataAndType(mCurrentVideoUri, convertOutputFormatToMimeType(mProfile.fileFormat));
+        intent.setDataAndType(mCurrentVideoUri, convertOutputFormatToMimeType(mProfile.fileFormat));//对于播放视频设置资源与格式
         try {
             mActivity
                     .startActivityForResult(intent, CameraActivity.REQ_CODE_DONT_SWITCH_TO_PREVIEW);
@@ -723,7 +725,7 @@ public class VideoModule implements CameraModule,
     @OnClickAttr
     public void onReviewDoneClicked(View v) {
         mIsInReviewMode = false;
-        doReturnToCaller(true);
+        doReturnToCaller(true);//对于外部调用录像获取资源，录像完后将视频资源返回调用者
     }
 
     @Override
@@ -751,7 +753,7 @@ public class VideoModule implements CameraModule,
             if (mQuickCapture) {
                 doReturnToCaller(!recordFail);
             } else if (!recordFail) {
-                showCaptureResult();
+                showCaptureResult();//录像完后获取视频缩略图并显示，显示其它隐藏的ui释放资源
             }
         } else if (!recordFail){
             // Start capture animation.
@@ -779,7 +781,7 @@ public class VideoModule implements CameraModule,
 
     public void onVideoSaved() {
         if (mIsVideoCaptureIntent) {
-            showCaptureResult();
+            showCaptureResult();//录像完后获取视频缩略图并显示，显示其它隐藏的ui释放资源
         }
     }
 
@@ -849,14 +851,14 @@ public class VideoModule implements CameraModule,
         String videoEncoder = mPreferences.getString(
                CameraSettings.KEY_VIDEO_ENCODER,
                mActivity.getString(R.string.pref_camera_videoencoder_default));
-        mVideoEncoder = VIDEO_ENCODER_TABLE.get(videoEncoder);
+        mVideoEncoder = VIDEO_ENCODER_TABLE.get(videoEncoder);//得到视频编码方式
 
         Log.v(TAG, "Video Encoder selected = " +mVideoEncoder);
 
         String audioEncoder = mPreferences.getString(
                CameraSettings.KEY_AUDIO_ENCODER,
                mActivity.getString(R.string.pref_camera_audioencoder_default));
-        mAudioEncoder = AUDIO_ENCODER_TABLE.get(audioEncoder);
+        mAudioEncoder = AUDIO_ENCODER_TABLE.get(audioEncoder);//得到音频编码方式
 
         Log.v(TAG, "Audio Encoder selected = " +mAudioEncoder);
 
@@ -922,7 +924,7 @@ public class VideoModule implements CameraModule,
         }
         int quality = CameraSettings.VIDEO_QUALITY_TABLE.get(videoQuality);
 
-        // Set video quality.
+        // Set video quality.//设置录像质量
         Intent intent = mActivity.getIntent();
         if (intent.hasExtra(MediaStore.EXTRA_VIDEO_QUALITY)) {
             int extraVideoQuality =
@@ -934,15 +936,15 @@ public class VideoModule implements CameraModule,
             }
         }
 
-        // Read time lapse recording interval.
+        // Read time lapse recording interval.//延时摄影
         String frameIntervalStr = mPreferences.getString(
                 CameraSettings.KEY_VIDEO_TIME_LAPSE_FRAME_INTERVAL,
                 mActivity.getString(R.string.pref_video_time_lapse_frame_interval_default));
         mTimeBetweenTimeLapseFrameCaptureMs = Integer.parseInt(frameIntervalStr);
-        mCaptureTimeLapse = (mTimeBetweenTimeLapseFrameCaptureMs != 0);
+        mCaptureTimeLapse = (mTimeBetweenTimeLapseFrameCaptureMs != 0);//如果延时时间为0就不开启延时摄影
 
         int hfrRate = 0;
-        String highFrameRate = mPreferences.getString(
+        String highFrameRate = mPreferences.getString(//hfr慢动作设置
             CameraSettings.KEY_VIDEO_HIGH_FRAME_RATE,
             mActivity. getString(R.string.pref_camera_hfr_default));
         if (("hfr".equals(highFrameRate.substring(0,3))) ||
@@ -957,7 +959,7 @@ public class VideoModule implements CameraModule,
         }
 
         int mappedQuality = quality;
-        if (mCaptureTimeLapse) {
+        if (mCaptureTimeLapse) {//如果是延时摄影
             mappedQuality = CameraSettings.getTimeLapseQualityFor(quality);
         } else if (hfrRate > 0) {
             mappedQuality = CameraSettings.getHighSpeedQualityFor(quality);
@@ -974,7 +976,7 @@ public class VideoModule implements CameraModule,
         qcomReadVideoPreferences();
 
         // Set video duration limit. The limit is read from the preference,
-        // unless it is specified in the intent.
+        // unless it is specified in the intent.//设置录像时间限制30s,10min,30min,no limit
         if (intent.hasExtra(MediaStore.EXTRA_DURATION_LIMIT)) {
             int seconds =
                     intent.getIntExtra(MediaStore.EXTRA_DURATION_LIMIT, 0);
@@ -1125,7 +1127,7 @@ public class VideoModule implements CameraModule,
     }
 
     @Override
-    public void onSwitchSavePath() {
+    public void onSwitchSavePath() {//选择保存路径到SDCARD
         mUI.setPreference(CameraSettings.KEY_CAMERA_SAVEPATH, "1");
         RotateTextToast.makeText(mActivity, R.string.on_switch_save_path_to_sdcard,
                 Toast.LENGTH_SHORT).show();
@@ -1144,7 +1146,7 @@ public class VideoModule implements CameraModule,
             return;
         // install an intent filter to receive SD card related events.
         IntentFilter intentFilter =
-                new IntentFilter(Intent.ACTION_MEDIA_EJECT);
+                new IntentFilter(Intent.ACTION_MEDIA_EJECT);//设置各种监听，如空间满了，屏幕灭了等等
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.addAction(Intent.ACTION_MEDIA_SCANNER_STARTED);
         intentFilter.addDataScheme("file");
@@ -1446,13 +1448,13 @@ public class VideoModule implements CameraModule,
         return (MediaStore.ACTION_VIDEO_CAPTURE.equals(action));
     }
 
-    private void doReturnToCaller(boolean valid) {
+    private void doReturnToCaller(boolean valid) {//对于外部调用录像获取资源，录像完后将视频资源返回调用者
         Intent resultIntent = new Intent();
         int resultCode;
         if (valid) {
             resultCode = Activity.RESULT_OK;
             resultIntent.setData(mCurrentVideoUri);
-            resultIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            resultIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//需要uri临时权限
         } else {
             resultCode = Activity.RESULT_CANCELED;
         }
@@ -1547,15 +1549,17 @@ public class VideoModule implements CameraModule,
                 try {
                     mVideoFileDescriptor =
                             mContentResolver.openFileDescriptor(saveUri, "rw");
-                    mCurrentVideoUri = saveUri;
+       		    Log.i(TAG,"hss mCurrentVideoUri = " + mCurrentVideoUri);
+       		    Log.i(TAG,"hss saveUri = " + saveUri);
+                    mCurrentVideoUri = saveUri;//视频文件真正保存的地方在上面的
                 } catch (java.io.FileNotFoundException ex) {
                     // invalid uri
                     Log.e(TAG, ex.toString());
                 }
             }
-            requestedSizeLimit = myExtras.getLong(MediaStore.EXTRA_SIZE_LIMIT);
+            requestedSizeLimit = myExtras.getLong(MediaStore.EXTRA_SIZE_LIMIT);//video大小限制
         }
-        mMediaRecorder = new MediaRecorder();
+        mMediaRecorder = new MediaRecorder();//实例化media录像
 
         // Unlock the camera object before passing it to media recorder.
         mCameraDevice.unlock();
@@ -1578,9 +1582,9 @@ public class VideoModule implements CameraModule,
 
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
-        mProfile.videoCodec = mVideoEncoder;
-        mProfile.audioCodec = mAudioEncoder;
-        mProfile.duration = mMaxVideoDurationInMs;
+        mProfile.videoCodec = mVideoEncoder;//视频编码方式
+        mProfile.audioCodec = mAudioEncoder;//音频编码方式
+        mProfile.duration = mMaxVideoDurationInMs;//录像时间限制
 
         if ((mProfile.audioCodec == MediaRecorder.AudioEncoder.AMR_NB) &&
             !mCaptureTimeLapse && !isHFR) {
@@ -1595,7 +1599,7 @@ public class VideoModule implements CameraModule,
             mMediaRecorder.setOutputFormat(mProfile.fileFormat);
             mMediaRecorder.setVideoFrameRate(mProfile.videoFrameRate);
             mMediaRecorder.setVideoEncodingBitRate(mProfile.videoBitRate);
-            mMediaRecorder.setVideoEncoder(mProfile.videoCodec);
+            mMediaRecorder.setVideoEncoder(mProfile.videoCodec);//设置编码方式
             if (isHSR) {
                 Log.i(TAG, "Configuring audio for HSR");
                 mMediaRecorder.setAudioEncodingBitRate(mProfile.audioBitRate);
@@ -1612,10 +1616,10 @@ public class VideoModule implements CameraModule,
         }
 
         mMediaRecorder.setVideoSize(mProfile.videoFrameWidth, mProfile.videoFrameHeight);
-        mMediaRecorder.setMaxDuration(mMaxVideoDurationInMs);
+        mMediaRecorder.setMaxDuration(mMaxVideoDurationInMs);//设置时间限制
         if (mCaptureTimeLapse) {
             double fps = 1000 / (double) mTimeBetweenTimeLapseFrameCaptureMs;
-            setCaptureRate(mMediaRecorder, fps);
+            setCaptureRate(mMediaRecorder, fps);//设置贞率
         } else if (captureRate > 0) {
             Log.i(TAG, "Setting capture-rate = " + captureRate);
             mMediaRecorder.setCaptureRate(captureRate);
@@ -1654,7 +1658,7 @@ public class VideoModule implements CameraModule,
         }
 
         if (Storage.isSaveSDCard() && maxFileSize > SDCARD_SIZE_LIMIT) {
-            maxFileSize = SDCARD_SIZE_LIMIT;
+            maxFileSize = SDCARD_SIZE_LIMIT;//sdcard最小空间限制，少了不行
         }
 
         try {
@@ -1725,7 +1729,7 @@ public class VideoModule implements CameraModule,
         String filename = title + convertOutputFormatToFileExt(outputFileFormat);
         String mime = convertOutputFormatToMimeType(outputFileFormat);
         String path = null;
-        if (Storage.isSaveSDCard() && SDCard.instance().isWriteable()) {
+        if (Storage.isSaveSDCard() && SDCard.instance().isWriteable()) {//保存视频的路径
             path = SDCard.instance().getDirectory() + '/' + filename;
         } else {
             path = Storage.DIRECTORY + '/' + filename;
@@ -1741,7 +1745,7 @@ public class VideoModule implements CameraModule,
                 Integer.toString(mProfile.videoFrameWidth) + "x" +
                 Integer.toString(mProfile.videoFrameHeight));
         Location loc = mLocationManager.getCurrentLocation();
-        if (loc != null) {
+        if (loc != null) {//位置信息不为空，就添加位置信息
             mCurrentVideoValues.put(Video.Media.LATITUDE, loc.getLatitude());
             mCurrentVideoValues.put(Video.Media.LONGITUDE, loc.getLongitude());
         }
@@ -1749,7 +1753,7 @@ public class VideoModule implements CameraModule,
         Log.v(TAG, "New video filename: " + mVideoFilename);
     }
 
-    private void saveVideo() {
+    private void saveVideo() {//在 stopVideoRecording() 之后调用
         if (mVideoFileDescriptor == null) {
             File origFile = new File(mCurrentVideoFilename);
             if (!origFile.exists() || origFile.length() <= 0 || (Storage.isSaveSDCard() && !SDCard.instance().isWriteable())) {
@@ -1772,7 +1776,8 @@ public class VideoModule implements CameraModule,
                 Log.e(TAG, "cannot access the file");
             }
             retriever.release();
-
+            //保存录像，需要注意的是并不是保存录像数据，录像数据已经存在于数据库，这个只是更新视频信息数据库
+            //最后会将视频数据从mCurrentVideoFilename写到mCurrentVideoValues
             mActivity.getMediaSaveService().addVideo(mCurrentVideoFilename,
                     duration, mCurrentVideoValues,
                     mOnVideoSavedListener, mContentResolver);
@@ -1894,7 +1899,7 @@ public class VideoModule implements CameraModule,
                 CameraSettings.KEY_VIDEO_HIGH_FRAME_RATE,
                 mActivity. getString(R.string.pref_camera_hfr_default));
             String videoQuality = mPreferences.getString(CameraSettings.KEY_VIDEO_QUALITY,
-                        null);
+                        null);//获得录像质量配置
             if (HighFrameRate.equals("hsr90") && videoQuality.equals("1280x720")) {
                 RotateTextToast.makeText(mActivity,R.string.error_app_unsupported_hsr90,
                         Toast.LENGTH_SHORT).show();
@@ -1910,7 +1915,7 @@ public class VideoModule implements CameraModule,
             return false;
         }
 
-        if( mUnsupportedHFRVideoCodec == true) {
+        if( mUnsupportedHFRVideoCodec == true) {//不支持慢动作的话
             Log.e(TAG, "Unsupported HFR and video codec combinations");
             RotateTextToast.makeText(mActivity, R.string.error_app_unsupported_hfr_codec,
                     Toast.LENGTH_SHORT).show();
@@ -1940,7 +1945,7 @@ public class VideoModule implements CameraModule,
             return false;
         }
 
-        requestAudioFocus();
+        requestAudioFocus();//申请音频焦点
 
         try {
             mMediaRecorder.start(); // Recording is now started
@@ -1977,8 +1982,8 @@ public class VideoModule implements CameraModule,
         mRecordingStartTime = SystemClock.uptimeMillis();
         mUI.showRecordingUI(true);
 
-        updateRecordingTime();
-        keepScreenOn();
+        updateRecordingTime();//更新录像时间
+        keepScreenOn();//保证屏幕亮
         UsageStatistics.onEvent(UsageStatistics.COMPONENT_CAMERA,
                 UsageStatistics.ACTION_CAPTURE_START, "Video");
         mStartRecPending = false;
@@ -2011,7 +2016,7 @@ public class VideoModule implements CameraModule,
         return bitmap;
     }
 
-    private void showCaptureResult() {
+    private void showCaptureResult() {//录像完后获取视频缩略图并显示，显示其它隐藏的ui释放资源
         mIsInReviewMode = true;
         Bitmap bitmap = getVideoThumbnail();
         if (bitmap != null) {
@@ -2050,7 +2055,7 @@ public class VideoModule implements CameraModule,
         Log.v(TAG, "stopVideoRecording");
         mStopRecPending = true;
         mUI.setSwipingEnabled(true);
-        if (!isVideoCaptureIntent()) {
+        if (!isVideoCaptureIntent()) {//如果不是通过隐式调用拍照，比如发短信加视频附件，微信添加视频附件等就需要显示选择模式按钮
             mUI.showSwitcher();
         }
 
@@ -2100,14 +2105,14 @@ public class VideoModule implements CameraModule,
             keepScreenOnAwhile();
             if (shouldAddToMediaStoreNow && !fail) {
                 if (mVideoFileDescriptor == null) {
-                    saveVideo();
-                } else if (mIsVideoCaptureIntent) {
+                    saveVideo();//正常录像，停止录像后保存录像，调用getMediaSaveService获取保存video
+                } else if (mIsVideoCaptureIntent) {//来自其它应用调用获取录制视频，走下面的保存与处理方式
                     // if no file save is needed, we can show the post capture UI now
-                    showCaptureResult();
+                    showCaptureResult();//录像完后获取视频缩略图并显示，显示其它隐藏的ui释放资源
                 }
             }
         }
-        // release media recorder
+        // release media recorder//释放media与音频焦点
         releaseMediaRecorder();
         releaseAudioFocus();
         if (!mPaused) {
@@ -2313,7 +2318,7 @@ public class VideoModule implements CameraModule,
         Log.i(TAG,"NOTE: qcomSetCameraParameters " + videoWidth + " x " + videoHeight);
         String colorEffect = mPreferences.getString(
             CameraSettings.KEY_COLOR_EFFECT,
-            mActivity.getString(R.string.pref_camera_coloreffect_default));
+            mActivity.getString(R.string.pref_camera_coloreffect_default));//默认滤镜
         Log.v(TAG, "Color effect value =" + colorEffect);
         if (isSupported(colorEffect, mParameters.getSupportedColorEffects())) {
             mParameters.setColorEffect(colorEffect);

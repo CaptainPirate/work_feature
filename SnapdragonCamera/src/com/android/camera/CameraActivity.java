@@ -1616,7 +1616,7 @@ public class CameraActivity extends Activity
 
         mLocalImagesObserver = new LocalMediaObserver();
         mLocalVideosObserver = new LocalMediaObserver();
-        //----------这部分的作用是啥-------------------start
+        //----------这部分的作用是啥-------------------start,监听拍照录像时数据保存
         mCursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
         getContentResolver().registerContentObserver(
