@@ -556,7 +556,7 @@ public class Launcher extends Activity
 
         mAppWidgetManager = AppWidgetManagerCompat.getInstance(this);
 
-        mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
+        mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);//初始化widget的host
         mAppWidgetHost.startListening();
 
         // If we are getting an onCreate, we can actually preempt onResume and unset mPaused here,
@@ -892,7 +892,7 @@ public class Launcher extends Activity
      * Returns whether we should delay spring loaded mode -- for shortcuts and widgets that have
      * a configuration step, this allows the proper animations to run after other transitions.
      */
-    private long completeAdd(PendingAddArguments args) {
+    private long completeAdd(PendingAddArguments args) {//添加缩略图，widget等
         long screenId = args.screenId;
         if (args.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
             // When the screen id represents an actual screen (as opposed to a rank) we make sure
@@ -1096,7 +1096,7 @@ public class Launcher extends Activity
         }
     }
 
-    private void completeTwoStageWidgetDrop(final int resultCode, final int appWidgetId) {
+    private void completeTwoStageWidgetDrop(final int resultCode, final int appWidgetId) {//拖拽widget
         CellLayout cellLayout =
                 (CellLayout) mWorkspace.getScreenWithId(mPendingAddInfo.screenId);
         Runnable onCompleteRunnable = null;
@@ -1593,10 +1593,10 @@ public class Launcher extends Activity
             mHotseat.setOnLongClickListener(this);
         }
 
-        mOverviewPanel = (CmccOverviewPanel) findViewById(R.id.overview_panel);
+        mOverviewPanel = (CmccOverviewPanel) findViewById(R.id.overview_panel);//长按桌面时下方显示的承载widget，wallpaper，setting按钮界面
         
         
-        View widgetButton = findViewById(R.id.widget_button);
+        View widgetButton = findViewById(R.id.widget_button);//hss 壁纸按钮
         ((TextView) widgetButton).setTextSize(TypedValue.COMPLEX_UNIT_SP, fixTextSize);
         widgetButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -1673,7 +1673,7 @@ public class Launcher extends Activity
 
         // Setup the workspace
         mWorkspace.setHapticFeedbackEnabled(false);
-        mWorkspace.setOnLongClickListener(this);
+        mWorkspace.setOnLongClickListener(this);//长按桌面
         mWorkspace.setup(dragController);
         dragController.addDragListener(mWorkspace);
 
@@ -1682,7 +1682,7 @@ public class Launcher extends Activity
                 mDragLayer.findViewById(R.id.search_drop_target_bar);
 
         // Setup AppsCustomize
-        mAppsCustomizeTabHost = (AppsCustomizeTabHost) findViewById(R.id.apps_customize_pane);
+        mAppsCustomizeTabHost = (AppsCustomizeTabHost) findViewById(R.id.apps_customize_pane);//widget存放页面
         mAppsCustomizeContent = (AppsCustomizePagedView)
                 mAppsCustomizeTabHost.findViewById(R.id.apps_customize_pane_content);
         mAppsCustomizeContent.setup(this, dragController);
@@ -1731,7 +1731,7 @@ public class Launcher extends Activity
         mCmccSearchAppsPanel.setup(this);
         /* bug 155071, liyichong.wt, ADD, 20160420 end*/
 
-        setupEffectMenus();
+        setupEffectMenus();//屏幕切换效果menu选择
 
         registerUnreadBadgeContainer(mWorkspace);
         registerUnreadBadgeContainer(mAppsCustomizeContent);
@@ -2144,7 +2144,7 @@ public class Launcher extends Activity
         updateRunning();
     }
 
-    public void onWindowVisibilityChanged(int visibility) {
+    public void onWindowVisibilityChanged(int visibility) {//界面可见性改变
         mVisible = visibility == View.VISIBLE;
         updateRunning();
         // The following code used to be in onResume, but it turns out onResume is called when
@@ -2790,7 +2790,7 @@ public class Launcher extends Activity
      * @param position The location on the screen where it was dropped, optional
      */
     void addAppWidgetFromDrop(PendingAddWidgetInfo info, long container, long screenId,
-            int[] cell, int[] span, int[] loc) {
+            int[] cell, int[] span, int[] loc) {//通过拖拽添加widget
         resetAddInfo();
         mPendingAddInfo.container = info.container = container;
         mPendingAddInfo.screenId = info.screenId = screenId;
@@ -3361,11 +3361,11 @@ public class Launcher extends Activity
      * Event handler for the (Add) Widgets button that appears after a long press
      * on the home screen.
      */
-    protected void onClickAddWidgetButton(View view) {
+    protected void onClickAddWidgetButton(View view) {//hss 点击小部件按钮后弹出widget页面
         Log.d(TAG, "onClickAddWidgetButton called.");
         if (LOGD) Log.d(TAG, "onClickAddWidgetButton");
         Log.d(TAG, "onClickAddWidgetButton call showAllApps to widgets");
-        showAllApps(true, AppsCustomizePagedView.ContentType.Widgets, true);
+        showAllApps(true, AppsCustomizePagedView.ContentType.Widgets, true);// hss根据参数显示allapp还是allwidget
     }
 
     /**
@@ -3745,7 +3745,7 @@ public class Launcher extends Activity
         getDragLayer().sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
     }
 
-    public boolean onLongClick(View v) {
+    public boolean onLongClick(View v) {//长按事件
         if (!isDraggingEnabled())
             return false;
         if (isWorkspaceLocked())
@@ -3798,7 +3798,7 @@ public class Launcher extends Activity
                         mWorkspace.startReordering(v);
                     }
                 } else {
-                    mWorkspace.enterOverviewMode();
+                    mWorkspace.enterOverviewMode();//长按桌面后进入缩进模式
                 }
             } else {
                 final boolean isAllAppsButton = inHotseat && isAllAppsButtonRank(
@@ -3977,13 +3977,13 @@ public class Launcher extends Activity
         if (!LauncherAppState.isDisableAllApps()
                 || contentType == AppsCustomizePagedView.ContentType.Widgets) {
             // Set the content type for the all apps/widgets space
-            mAppsCustomizeTabHost.setContentTypeImmediate(contentType);
+            mAppsCustomizeTabHost.setContentTypeImmediate(contentType);//设置当前的内容类型
         }
 
         if (animated && initialized) {
             mStateAnimation = LauncherAnimUtils.createAnimatorSet();
             final AppsCustomizePagedView content = (AppsCustomizePagedView)
-                    toView.findViewById(R.id.apps_customize_pane_content);
+                    toView.findViewById(R.id.apps_customize_pane_content);//盛放所有widget的页面
 
             final View page = content.getPageAt(content.getCurrentPage());
             final View revealView = toView.findViewById(R.id.fake_page);
@@ -3991,8 +3991,8 @@ public class Launcher extends Activity
             final float initialPanelAlpha = 1f;
 
             final boolean isWidgetTray = contentType == AppsCustomizePagedView.ContentType.Widgets;
-            if (isWidgetTray) {
-                revealView.setBackground(res.getDrawable(R.drawable.quantum_panel_dark));
+            if (isWidgetTray) {//如果是widget托盘即widget承载界面
+                revealView.setBackground(res.getDrawable(R.drawable.quantum_panel_dark));//设置widget承载页面的背景色
             } else {
                 //revealView.setBackground(res.getDrawable(R.drawable.quantum_panel));
             }
@@ -4573,14 +4573,14 @@ public class Launcher extends Activity
     }
 
     void showAllApps(boolean animated, AppsCustomizePagedView.ContentType contentType,
-                     boolean resetPageToZero) {
+                     boolean resetPageToZero) {//根据contentType显示allapp还是allwidget
         if (mState != State.WORKSPACE) return;
 
-        if (resetPageToZero) {
+        if (resetPageToZero) {//这是干嘛的
             mAppsCustomizeTabHost.reset();
         }
         Log.d(TAG, "showAllApps call showAppsCustomizeHelper");
-        showAppsCustomizeHelper(animated, false, contentType);
+        showAppsCustomizeHelper(animated, false, contentType);//根据contentType显示allapp还是allwidget
         mAppsCustomizeTabHost.post(new Runnable() {
             @Override
             public void run() {
@@ -4615,7 +4615,7 @@ public class Launcher extends Activity
     }
 
     void exitSpringLoadedDragModeDelayed(final boolean successfulDrop, int delay,
-            final Runnable onCompleteRunnable) {
+            final Runnable onCompleteRunnable) {//拖拽模式下隐藏widget承载页面
         if (mState != State.APPS_CUSTOMIZE_SPRING_LOADED) return;
 
         mHandler.postDelayed(new Runnable() {
@@ -4656,7 +4656,7 @@ public class Launcher extends Activity
     /**
      * Hides the hotseat area.
      */
-    void hideHotseat(boolean animated) {
+    void hideHotseat(boolean animated) {//隐藏hotseat
         if (!LauncherAppState.getInstance().isScreenLarge()) {
             if (animated) {
                 if (mHotseat.getAlpha() != 0f) {
@@ -4677,7 +4677,7 @@ public class Launcher extends Activity
      * If layout is null, add to the current screen.
      */
     void addExternalItemToScreen(ItemInfo itemInfo, final CellLayout layout) {
-        if (!mWorkspace.addExternalItemToScreen(itemInfo, layout)) {
+        if (!mWorkspace.addExternalItemToScreen(itemInfo, layout)) {//外部拖拽到屏幕上
             showOutOfSpaceMessage(isHotseatLayout(layout));
         }
     }
@@ -6252,7 +6252,7 @@ public class Launcher extends Activity
         toSmall.start();
     }
 
-    private void setupEffectMenus() {
+    private void setupEffectMenus() {//添加所有的切换效果
         Resources res = getResources();
         String name = null;
         Drawable drawable = null;
@@ -6369,7 +6369,7 @@ public class Launcher extends Activity
                     Effect prev = mPreviewEffect;
                     mPreviewEffect = effect;
                     updateSelectedEffectDrawable(prev, mPreviewEffect);
-                    previewSwitchEffect();
+                    previewSwitchEffect();//预览当前点击的切换效果
                 }
             });
             view.setOnTouchListener(getHapticFeedbackTouchListener());

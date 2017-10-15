@@ -2437,7 +2437,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     protected void loadAssociatedPages(int page) {
         loadAssociatedPages(page, false);
     }
-    protected void loadAssociatedPages(int page, boolean immediateAndOnly) {
+    protected void loadAssociatedPages(int page, boolean immediateAndOnly) {//重新展示页面
         if (mContentIsRefreshable) {
             final int count = getChildCount();
             if (page < count) {

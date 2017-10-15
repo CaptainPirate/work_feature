@@ -2289,7 +2289,7 @@ public class Workspace extends SmoothPagedView
         enableOverviewMode(false, snapPage, animated);
     }
 
-    private void enableOverviewMode(boolean enable, int snapPage, boolean animated) {
+    private void enableOverviewMode(boolean enable, int snapPage, boolean animated) {//桌面缩进与展开都是调用这个
 
         /*bug 163664 tangzhongfeng.wt ADD 20160502 start */
         if (isStart) {
@@ -2474,7 +2474,7 @@ public class Workspace extends SmoothPagedView
     }
 
     Animator getChangeStateAnimation(final State state, boolean animated, int delay, int snapPage,
-            ArrayList<View> layerViews, final boolean isIconManage) {
+            ArrayList<View> layerViews, final boolean isIconManage) {//hss 最后调用这里对桌面缩放，哪些显示哪些消失隐藏
         Log.d(TAG, String.format("getChangeStateAnimation called, animated: %s", animated));
         if (mState == state) {
             Log.d(TAG, "getChangeStateAnimation return early.");
@@ -2565,9 +2565,9 @@ public class Workspace extends SmoothPagedView
             } else if (stateIsOverview || stateIsOverviewHidden) {
                 //mNewScale = mOverviewModeShrinkFactor;
                 mNewScale = 1.0f;
-            } else if (workspaceToIconManageOverview) {
+            } else if (workspaceToIconManageOverview) {//workspace到图标管理模式
                 mNewScale = 0.95f;
-            } else if (iconManageOverviewToWorkspace) {
+            } else if (iconManageOverviewToWorkspace) {//图标管理模式到workspace
                 mNewScale = 10 / 9.5f;
             }
         }
@@ -2634,9 +2634,9 @@ public class Workspace extends SmoothPagedView
         final View searchBar = mLauncher.getQsbBar();
         View op = null;
         if (isIconManage) {
-        	op = mLauncher.getIconManageHotseat();
+        	op = mLauncher.getIconManageHotseat();//hss 显示图标管理
         } else {
-        	op = mLauncher.getOverviewPanel();
+        	op = mLauncher.getOverviewPanel();//hss 显示overview
         }
         final View overviewPanel = op;
         final View hotseat = mLauncher.getHotseat();
@@ -4410,7 +4410,7 @@ public class Workspace extends SmoothPagedView
      * Add the item specified by dragInfo to the given layout.
      * @return true if successful
      */
-    public boolean addExternalItemToScreen(ItemInfo dragInfo, CellLayout layout) {
+    public boolean addExternalItemToScreen(ItemInfo dragInfo, CellLayout layout) {//外部拖拽到屏幕上触发
         if (layout.findCellForSpan(mTempEstimate, dragInfo.spanX, dragInfo.spanY)) {
             onDropExternal(dragInfo.dropPos, (ItemInfo) dragInfo, (CellLayout) layout, false);
             return true;
@@ -4433,7 +4433,7 @@ public class Workspace extends SmoothPagedView
      * to add an item to one of the workspace screens.
      */
     private void onDropExternal(final int[] touchXY, final Object dragInfo,
-            final CellLayout cellLayout, boolean insertAtFirst, DragObject d) {
+            final CellLayout cellLayout, boolean insertAtFirst, DragObject d) {//外部拖拽
         final Runnable exitSpringLoadedRunnable = new Runnable() {
             @Override
             public void run() {

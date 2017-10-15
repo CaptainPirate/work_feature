@@ -181,7 +181,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
     // Dimens
     private int mContentWidth, mContentHeight;
-    private int mWidgetCountX, mWidgetCountY;
+    private int mWidgetCountX, mWidgetCountY;//widget承载页面行列
     private PagedViewCellLayout mWidgetSpacingLayout;
     private int mNumAppsPages;
     private int mNumWidgetPages;
@@ -232,7 +232,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         mLayoutInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
         mApps = new ArrayList<AppInfo>();
-        mWidgets = new ArrayList<Object>();
+        mWidgets = new ArrayList<Object>();//所有的widget
         mIconCache = (LauncherAppState.getInstance()).getIconCache();
         mRunningTasks = new ArrayList<AppsCustomizeAsyncTask>();
 
@@ -922,12 +922,12 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         mDeferredPrepareLoadWidgetPreviewsTasks.clear();
     }
 
-    public void setContentType(ContentType type) {
+    public void setContentType(ContentType type) {//设置当前页面的内容类型widget还是app
         // Widgets appear to be cleared every time you leave, always force invalidate for them
         if (mContentType != type || type == ContentType.Widgets) {
             int page = (mContentType != type) ? 0 : getCurrentPage();
             mContentType = type;
-            invalidatePageData(page, true);
+            invalidatePageData(page, true);//设置好后重新更新页面数据
         }
     }
 
@@ -1148,7 +1148,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         layout.measure(widthSpec, heightSpec);
     }
 
-    public void syncWidgetPageItems(final int page, final boolean immediate) {
+    public void syncWidgetPageItems(final int page, final boolean immediate) {//同步widget单元加载
         int numItemsPerPage = mWidgetCountX * mWidgetCountY;
 
         final PagedViewGridLayout layout = (PagedViewGridLayout) getPageAt(page);
@@ -1173,7 +1173,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             Object rawInfo = items.get(i);
             PendingAddItemInfo createItemInfo = null;
             PagedViewWidget widget = (PagedViewWidget) mLayoutInflater.inflate(
-                    R.layout.apps_customize_widget, layout, false);
+                    R.layout.apps_customize_widget, layout, false);//每一个pagedviewwidget代表一个widget缩略图对象
             if (rawInfo instanceof AppWidgetProviderInfo) {
                 // Fill in the widget information
                 AppWidgetProviderInfo info = (AppWidgetProviderInfo) rawInfo;
@@ -1200,7 +1200,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 widget.applyFromResolveInfo(mPackageManager, info, getWidgetPreviewLoader());
                 widget.setTag(createItemInfo);
             }
-            widget.setOnClickListener(this);
+            widget.setOnClickListener(this);//各种监听事件
             widget.setOnLongClickListener(this);
             widget.setOnTouchListener(this);
             widget.setOnKeyListener(this);
@@ -1209,7 +1209,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             int ix = i % mWidgetCountX;
             int iy = i / mWidgetCountX;
 
-            if (ix > 0) {
+            if (ix > 0) {//绘制间隔或边线
                 View border = widget.findViewById(R.id.left_border);
                 border.setVisibility(View.VISIBLE);
             }
